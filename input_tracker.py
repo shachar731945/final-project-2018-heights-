@@ -22,38 +22,38 @@ class InputTracker:
         pythoncom.PumpMessages()
 
     def keyboard_press(self, event):
-        self._input_hub.send_input("kp|" + event.KeyID)
+        self._input_hub.send_input("k|p|" + event.KeyID)
         return self.confirm_state
 
     def keyboard_release(self, event):
-        self._input_hub.send_input("kr|" + event.KeyID)
+        self._input_hub.send_input("k|r|" + event.KeyID)
         return self.confirm_state
 
     def mouse_event(self, event):
-        self._input_hub.send_input("mmove|" + event.Position)
-        self._input_hub.send_input("mwheel|" + event.Wheel)
+        self._input_hub.send_input("m|m|" + event.Position)
+        self._input_hub.send_input("m|w|" + event.Wheel)
         return self.confirm_state
 
     def mouse_left_down(self, event):
-        self._input_hub.send_input("mld")
+        self._input_hub.send_input("m|c|l|d")
         return self.confirm_state
 
     def mouse_left_up(self, event):
-        self._input_hub.send_input("mlu")
+        self._input_hub.send_input("m|c|l|u")
         return self.confirm_state
 
     def mouse_middle_down(self, event):
-        self._input_hub.send_input("mmd")
+        self._input_hub.send_input("m|c|m|d")
         return self.confirm_state
 
     def mouse_middle_up(self, event):
-        self._input_hub.send_input("mmu")
+        self._input_hub.send_input("m|c|m|u")
         return self.confirm_state
 
     def mouse_right_down(self, event):
-        self._input_hub.send_input("mrd")
+        self._input_hub.send_input("m|c|r|d")
         return self.confirm_state
 
     def mouse_right_up(self, event):
-        self._input_hub.send_input("mru")
+        self._input_hub.send_input("m|c|r|u")
         return self.confirm_state
