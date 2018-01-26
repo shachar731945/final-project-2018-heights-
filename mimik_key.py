@@ -151,8 +151,6 @@ SendInput = ctypes.windll.user32.SendInput
 
 PUL = ctypes.POINTER(ctypes.c_ulong)
 
-#https://stackoverflow.com/questions/36554353/keypress-detection
-
 
 class KeyBdInput(ctypes.Structure):
     _fields_ = [("wVk", ctypes.c_ushort),
@@ -208,16 +206,5 @@ def key_press_example():
     press_key(0x46)
     time.sleep(0.5)
     release_key(0x46)
-
-import keyboard
-while True:
-    try:
-        if keyboard.is_pressed('a'):
-            print 'You Pressed A Key!'
-            break
-        else:
-            pass
-    except:
-        break
 
 

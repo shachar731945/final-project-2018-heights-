@@ -22,16 +22,16 @@ class InputTracker:
         pythoncom.PumpMessages()
 
     def keyboard_press(self, event):
-        self._input_hub.send_input("k|p|" + event.KeyID)
+        self._input_hub.send_input("k|p|" + str(event.KeyID))
         return self.confirm_state
 
     def keyboard_release(self, event):
-        self._input_hub.send_input("k|r|" + event.KeyID)
+        self._input_hub.send_input("k|r|" + str(event.KeyID))
         return self.confirm_state
 
     def mouse_event(self, event):
-        self._input_hub.send_input("m|m|" + event.Position)
-        self._input_hub.send_input("m|w|" + event.Wheel)
+        self._input_hub.send_input("m|m|" + str(event.Position))
+        self._input_hub.send_input("m|w|" + str(event.Wheel))
         return self.confirm_state
 
     def mouse_left_down(self, event):
