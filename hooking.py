@@ -14,7 +14,7 @@ def on_keyboard_release(event):
 
 def on_mouse_event(event):
     # print event.Position
-    # print event.Wheel
+    print event.Wheel
     return True
 
 
