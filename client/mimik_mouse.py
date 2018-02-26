@@ -17,13 +17,8 @@ def click_mouse(click_state):
 
 
 def wheel_mouse(wheel_state):
-    wheel_dictionary = {'u': 1, 'd': -1}
-    win32api.mouse_event(win32con.MOUSEEVENTF_WHEEL, 0, 0,
-                         wheel_dictionary[wheel_state], 0)
+    win32api.mouse_event(win32con.MOUSEEVENTF_WHEEL, 0, 0, wheel_state, 0)
 
-# testing
-from win32api import GetSystemMetrics
-print GetSystemMetrics(1)
 
 
 

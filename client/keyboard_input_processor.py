@@ -17,20 +17,13 @@ class KeyboardInputProcessor(DeviceInputProcessor):
 
     @staticmethod
     def press(io_input_key):
-        key_id = io_input_key[1:]
+        key_id = int(io_input_key)
         press_key(key_id)
-        print "press another pc",
-        print "press this pc",
-        print key_id
 
     @staticmethod
     def release(io_input_key):
-        key_id = io_input_key[1:]
+        key_id = int(io_input_key[1:])
         release_key(key_id)
-        print "release another pc",
-        print "release this pc",
-        print key_id
-
 
 
 
