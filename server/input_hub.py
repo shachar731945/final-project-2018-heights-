@@ -1,10 +1,10 @@
 class InputHub:
 
-    def __init__(self, process_to_input_to):
-        self._child_process_handle = process_to_input_to
+    def __init__(self, process_communication):
+        self._process_communication_handle = process_communication
 
     def send_input(self, io_input):
-        self._child_process_handle.send(io_input)
+        self._process_communication_handle.send(io_input)
 
 
 # this functions should be on the main program
