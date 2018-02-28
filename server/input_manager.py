@@ -5,11 +5,11 @@ from win32api import GetSystemMetrics, SetCursorPos
 class InputManager:
 
     def __init__(self, process_communication_handle, server_network_manager,
-                 pc_matrix, server_pc_coordinates):
+                 pc_matrix, server_pc_coordinates=0):
         self._process_communication_handle = process_communication_handle
         self._server_network_manager = server_network_manager
         self._pc_matrix = pc_matrix
-        self._server_pc_coordinates = server_pc_coordinates
+        # self._server_pc_coordinates = server_pc_coordinates
         # False if no server pc
 
     def initialize(self):
@@ -44,9 +44,9 @@ class InputManager:
                             pass
                     except KeyError:
                         pass  # exception handling
-                if self._pc_matrix.get_pointer() == \
-                        self._server_pc_coordinates:
-                    pass
+                # if self._pc_matrix.get_pointer() == \
+                #         self._server_pc_coordinates:
+                #     pass
             sleep(0.00001)
 
     @staticmethod

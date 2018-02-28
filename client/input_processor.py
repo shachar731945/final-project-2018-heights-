@@ -1,6 +1,7 @@
 from mouse_input_processor import MouseInputProcessor
 from keyboard_input_processor import KeyboardInputProcessor
 from time import sleep
+from multiprocessing import Process
 
 event_type_dictionary = {
     "m": 0,
@@ -17,8 +18,12 @@ class InputProcessor:
             client_network_manager))
         self._io_devices_processors.append(KeyboardInputProcessor(
             client_network_manager))
+        self._process = Process(target=self.initialize_process, args=())
 
     def initialize(self):
+        self._process.start()
+
+    def initialize_process(self):
         self._client_network_manager.send_message("test")
         while 1:
             data = self._client_network_manager.recv_message()
@@ -31,15 +36,18 @@ class InputProcessor:
                             data[data.index('|')+1:])
             sleep(0.1)
 
+    def stop(self):
+        self._process.terminate()
+
     @staticmethod
     def identify_io_device(data):
         return event_type_dictionary[data.split('|')[0]]
 
 
 # for check
-from client_network_manager import ClientNetworkManager
-a = InputProcessor(ClientNetworkManager("localhost", 8897))
-a.initialize()
+# from client_network_manager import ClientNetworkManager
+# a = InputProcessor(ClientNetworkManager("localhost", 8897))
+# a.initialize()
 
 
 
