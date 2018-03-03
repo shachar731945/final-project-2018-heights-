@@ -8,17 +8,16 @@ stuff = ["k|p|" + str(0x30), "k|r|" + str(0x30), "m|m|" + str((300, 300)),
 a = len(stuff)
 
 import time
-import random
 data = ""
 while not data:
     data, adrr = sock.recvfrom(1024)
-raw_input("nibba")
+input("nibba")
 time.sleep(5)
 while 1:
     # index = random.randint(0, 1)
     index = 3
     sock.sendto(stuff[index], adrr)
-    print "hi"
+    print("hi")
     import time
     time.sleep(0.1)
 

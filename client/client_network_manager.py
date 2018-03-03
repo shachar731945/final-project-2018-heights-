@@ -14,7 +14,7 @@ class ClientNetworkManager:
 
     def recv_message(self):
         data, addr = self._socket.recvfrom(self._recv_length)
-        return data
+        return data.decode()
 
 
 

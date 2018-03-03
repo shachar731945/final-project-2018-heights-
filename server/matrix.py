@@ -3,7 +3,7 @@ class Matrix:
     def __init__(self, row, col):
         self._matrix = []
         self._pointer = 0, 0
-        self._matrix = [[object for c in col] for r in row]
+        self._matrix = [[object for c in range(col)] for r in range(row)]
         # A bad way of creating this 2d array
         # for r in row:
         #     self._matrix.append([])

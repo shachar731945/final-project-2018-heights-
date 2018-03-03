@@ -8,7 +8,7 @@ def main():
     p_process.start()
     from time import sleep
     sleep(3)
-    print "geezzzzzzzzzzzzzzzzzzzz"
+    print("geezzzzzzzzzzzzzzzzzzzz")
     p_track.terminate()
     p_process.terminate()
 
@@ -20,13 +20,13 @@ def create_traking(comm):
 
 
 def track_input(comm):
-    print "bla there"
+    print("bla there")
     while 1:
         data = comm.recv()
-        print "hi3 " + data
+        print("hi3 " + data)
         if data:
-            print data
-            print "hi4"
+            print(data)
+            print("hi4")
 
 
 if __name__ == '__main__':
