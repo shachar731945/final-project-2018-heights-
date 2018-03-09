@@ -20,8 +20,7 @@ class InputProcessor:
         self._process = Process(target=self.initialize_process, args=())
 
     def initialize(self):
-        if __name__ == "__main__":
-            self._process.start()
+        self._process.start()
 
     def initialize_process(self):
         self._client_network_manager.send_message("test")
