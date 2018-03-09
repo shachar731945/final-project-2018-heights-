@@ -4,9 +4,8 @@ from client_network_manager import ClientNetworkManager
 client = ClientNetworkManager("192.168.0.20", 8821)
 input_processor = InputProcessor(client)
 input_processor.initialize()
-a = raw_input("5")
-while a != "*":
-    a = raw_input("5")
+from time import sleep
+sleep(10)
 input_processor.stop()
 
 
