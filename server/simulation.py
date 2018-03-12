@@ -15,10 +15,13 @@ def getting_information(comm, queue):
 
 
 def main():
-    server = ServerNetworkManager(8820)
+    server = ServerNetworkManager(8845)
+    print(33)
+    data, adrr = server.recv_message()
+    print("juju")
     pc_matrix = Matrix(1, 2)
     pc_controller = Computer(("192.168.0.20", 8821))
-    pc_controlled = Computer(("192.168.0.25", 8822))
+    pc_controlled = Computer(adrr)
     pc_matrix.set(0, 1, pc_controller)
     pc_matrix.set(0, 0, pc_controlled)
     q = Queue()
@@ -32,6 +35,7 @@ def main():
     sleep(10)
     p.terminate()
     session_manager.end_session()
+    server.close_connection()
 
 
 if __name__ == '__main__':

@@ -11,15 +11,15 @@ class InputTracker:
         self._hm.HookMouse()
         self._confirm_state = confirm
         self._communication_handle = communication_handle
-        self._hm.KeyDown = self.keyboard_press
-        self._hm.KeyUp = self.keyboard_release
-        self._hm_MouseAll = self.mouse_event
-        self._hm.SubscribeMouseLeftDown(self.mouse_left_down)
-        self._hm.SubscribeMouseMiddleDown(self.mouse_middle_down)
-        self._hm.SubscribeMouseRightDown(self.mouse_right_down)
-        self._hm.SubscribeMouseLeftUp(self.mouse_left_up)
-        self._hm.SubscribeMouseMiddleUp(self.mouse_middle_up)
-        self._hm.SubscribeMouseRightUp(self.mouse_right_up)
+        # self._hm.KeyDown = self.keyboard_press
+        # self._hm.KeyUp = self.keyboard_release
+        self._hm.MouseAll = self.mouse_event
+        # self._hm.SubscribeMouseLeftDown(self.mouse_left_down)
+        # self._hm.SubscribeMouseMiddleDown(self.mouse_middle_down)
+        # self._hm.SubscribeMouseRightDown(self.mouse_right_down)
+        # self._hm.SubscribeMouseLeftUp(self.mouse_left_up)
+        # self._hm.SubscribeMouseMiddleUp(self.mouse_middle_up)
+        # self._hm.SubscribeMouseRightUp(self.mouse_right_up)
         pythoncom.PumpMessages()
 
     def keyboard_press(self, event):
@@ -31,12 +31,16 @@ class InputTracker:
         return self._confirm_state
 
     def mouse_event(self, event):
-        position = event.Position()
-        requested_position = (position[0] - event.Position[0],
-                              position[1] - event.Position[1])
-        self._communication_handle.send("m|m|" + str(requested_position))
-        self._communication_handle.send("m|w|" + str(event.Wheel))
-        return self._confirm_state
+        # position = GetCursorPos()
+        # requested_position = (event.Position[0] - position[0],
+        #                       event.Position[1] - position[1])
+        if event.MessageName == "mouse wheel":
+            print("wheel " + str(event.Wheel))
+        elif event.MessageName == "mouse move":
+            print("move " + str(event.Position))
+        # self._communication_handle.send("m|m|" + str(requested_position))
+        # self._communication_handle.send("m|w|" + str(event.Wheel))
+        return True
 
     def mouse_left_down(self, event):
         self._communication_handle.send("m|c|l|d")
@@ -61,6 +65,12 @@ class InputTracker:
     def mouse_right_up(self, event):
         self._communication_handle.send("m|c|r|u")
         return self._confirm_state
+
+# just for check
+InputTracker(False, 5)
+
+
+
 
 
 

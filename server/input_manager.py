@@ -4,9 +4,10 @@ from win32api import GetSystemMetrics, SetCursorPos
 
 class InputManager:
 
-    def __init__(self, pc_matrix, comm, server_pc_coordinates=0):
+    def __init__(self, pc_matrix, comm, server_pc_address=(0, 0)):
         self._pc_matrix = pc_matrix
         self._communication_pipe_handle = comm
+        self._server_pc_address = server_pc_address
         # self._server_pc_coordinates = server_pc_coordinates
         # False if no server pc, use in future for mouse hide if self control
 
@@ -37,6 +38,8 @@ class InputManager:
                         try:
                             address = change_matrix_functions[1]().address
                             change_matrix_functions[0]()
+                            if address == self._server_pc_address:
+                                print("A")
                         except:  # exception handling
                             pass
                     except KeyError:
