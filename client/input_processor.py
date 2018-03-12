@@ -23,16 +23,16 @@ class InputProcessor:
         self._process.start()
 
     def initialize_process(self):
+        print("gg ez pz")
         self._client_network_manager.send_message("test")
         while 1:
-            data = self._client_network_manager.recv_message()
+            print("damn")
+            data, adrr = self._client_network_manager.recv_message()
+            print(data)
             if data:
-                io_device_processor_index = self.identify_io_device(
-                    data)
-                processor = self._io_devices_processors[
-                    io_device_processor_index]
-                processor.process_input(
-                            data[data.index('|')+1:])
+                io_device_processor_index = self.identify_io_device(data)
+                processor = self._io_devices_processors[io_device_processor_index]
+                processor.process_input(data[data.index('|')+1:])
             sleep(0.00000001)
 
     def stop(self):

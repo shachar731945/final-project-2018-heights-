@@ -14,8 +14,30 @@ class ClientNetworkManager:
         self._socket.sendto(message.encode(), (self._send_ip, self._send_port))
 
     def recv_message(self):
-        data, addr = self._socket.recvfrom(self._recv_length)
-        return data.decode()
+        print("gg")
+        try:
+            data, addr = self._socket.recvfrom(self._recv_length)
+            return data.decode(), addr
+        except:
+            print("asdf")
+            return "blaaa", 00
+
+    def close_connection(self):
+        self._socket.close()
+
+
+def main():
+    client = ClientNetworkManager("192.168.0.20", 8835)
+    client.send_message("gigi")
+    data = client.recv_message()[0]
+    while data != "da":
+        print(data)
+        data = client.recv_message()[0]
+    client.close_connection()
+
+
+if __name__ == '__main__':
+    main()
 
 
 
