@@ -1,6 +1,6 @@
 import pyHook
 import pythoncom
-from win32gui import GetCursorPos
+from win32api import SetCursorPos, GetSystemMetrics
 
 
 class InputTracker:
@@ -11,15 +11,16 @@ class InputTracker:
         self._hm.HookMouse()
         self._confirm_state = confirm
         self._communication_handle = communication_handle
-        # self._hm.KeyDown = self.keyboard_press
-        # self._hm.KeyUp = self.keyboard_release
+        self._static_position = (GetSystemMetrics()[0], GetSystemMetrics()[1])
+        self._hm.KeyDown = self.keyboard_press
+        self._hm.KeyUp = self.keyboard_release
         self._hm.MouseAll = self.mouse_event
-        # self._hm.SubscribeMouseLeftDown(self.mouse_left_down)
-        # self._hm.SubscribeMouseMiddleDown(self.mouse_middle_down)
-        # self._hm.SubscribeMouseRightDown(self.mouse_right_down)
-        # self._hm.SubscribeMouseLeftUp(self.mouse_left_up)
-        # self._hm.SubscribeMouseMiddleUp(self.mouse_middle_up)
-        # self._hm.SubscribeMouseRightUp(self.mouse_right_up)
+        self._hm.SubscribeMouseLeftDown(self.mouse_left_down)
+        self._hm.SubscribeMouseMiddleDown(self.mouse_middle_down)
+        self._hm.SubscribeMouseRightDown(self.mouse_right_down)
+        self._hm.SubscribeMouseLeftUp(self.mouse_left_up)
+        self._hm.SubscribeMouseMiddleUp(self.mouse_middle_up)
+        self._hm.SubscribeMouseRightUp(self.mouse_right_up)
         pythoncom.PumpMessages()
 
     def keyboard_press(self, event):
@@ -31,16 +32,19 @@ class InputTracker:
         return self._confirm_state
 
     def mouse_event(self, event):
-        # position = GetCursorPos()
-        # requested_position = (event.Position[0] - position[0],
-        #                       event.Position[1] - position[1])
         if event.MessageName == "mouse wheel":
             print("wheel " + str(event.Wheel))
+            self._communication_handle.send("m|w|" + str(event.Wheel))
+            # how is the scroll how is it
         elif event.MessageName == "mouse move":
+            position = event.Position
+            movement = (position[0] - self._static_position[0], position[1] - self._static_position[1])
             print("move " + str(event.Position))
-        # self._communication_handle.send("m|m|" + str(requested_position))
-        # self._communication_handle.send("m|w|" + str(event.Wheel))
-        return True
+            print("movement " + str(movement))
+            self._communication_handle.send("m|m|" + str(movement))
+        if event.Injected:
+            return True
+        return False
 
     def mouse_left_down(self, event):
         self._communication_handle.send("m|c|l|d")
@@ -67,6 +71,7 @@ class InputTracker:
         return self._confirm_state
 
 # just for check
+SetCursorPos((960, 540))
 InputTracker(False, 5)
 
 
