@@ -1,8 +1,8 @@
 class Matrix:
 
-    def __init__(self, row, col):
+    def __init__(self, row, col, pointer):
         self._matrix = []
-        self._pointer = 0, 0
+        self._pointer = pointer
         self._matrix = [[object for c in range(col)] for r in range(row)]
         # A bad way of creating this 2d array
         # for r in row:
@@ -29,28 +29,28 @@ class Matrix:
         return self._pointer
 
     def pointer_up(self):
-        self._pointer[1] += 1
+        self._pointer = self._pointer[0], self._pointer[1] + 1
 
     def check_up(self):
-        return self._matrix[self._pointer[0]][self._pointer[1]+1]
+        return self._matrix[self._pointer[0]][self._pointer[1] + 1]
 
     def pointer_down(self):
-        self._pointer[1] -= 1
+        self._pointer = self._pointer[0], self._pointer[1] - 1
 
     def check_down(self):
         return self._matrix[self._pointer[0]][self._pointer[1] - 1]
 
     def pointer_right(self):
-        self._pointer[0] += 1
+        self._pointer = self._pointer[0] + 1, self._pointer[1]
 
     def check_right(self):
-        return self._matrix[self._pointer[0] + 1][self._pointer[1] + 1]
+        return self._matrix[self._pointer[0] + 1][self._pointer[1]]
 
     def pointer_left(self):
-        self._pointer[0] -= 1
+        self._pointer = self._pointer[0] - 1, self._pointer[1]
 
     def check_left(self):
-        return self._matrix[self._pointer[0] - 1][self._pointer[1] + 1]
+        return self._matrix[self._pointer[0] - 1][self._pointer[1]]
 
 
 

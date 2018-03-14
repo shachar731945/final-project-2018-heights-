@@ -12,12 +12,12 @@ import random
 data = ""
 while not data:
     data, adrr = sock.recvfrom(1024)
-raw_input("nibba")
+input("nibba")
 time.sleep(5)
 while 1:
     index = random.randint(0, 1)
     sock.sendto(stuff[index], adrr)
-    print "hi"
+    print("hi")
     import time
     time.sleep(0.1)
 
