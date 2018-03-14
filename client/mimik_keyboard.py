@@ -202,9 +202,4 @@ def release_key(hexkeycode):
     ctypes.windll.user32.SendInput(1, ctypes.pointer(x), ctypes.sizeof(x))
 
 
-def key_press_example():
-    press_key(0x46)
-    time.sleep(0.5)
-    release_key(0x46)
-
 

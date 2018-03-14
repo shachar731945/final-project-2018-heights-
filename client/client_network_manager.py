@@ -25,20 +25,20 @@ class ClientNetworkManager:
     def close_connection(self):
         self._socket.close()
 
-
-def main():
-    client = ClientNetworkManager("192.168.0.20", 8835)
-    client.send_message("gigi")
-    data = client.recv_message()[0]
-    while data != "da":
-        print(data)
-        data = client.recv_message()[0]
-    client.close_connection()
-
-
-if __name__ == '__main__':
-    main()
-
-
-
+#
+# def main():
+#     client = ClientNetworkManager("192.168.0.20", 8835)
+#     client.send_message("gigi")
+#     data = client.recv_message()[0]
+#     while data != "da":
+#         print(data)
+#         data = client.recv_message()[0]
+#     client.close_connection()
+#
+#
+# if __name__ == '__main__':
+#     main()
+#
+#
+#
 

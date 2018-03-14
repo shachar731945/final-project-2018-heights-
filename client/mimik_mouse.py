@@ -17,8 +17,7 @@ def click_mouse(click_state):
 
 
 def wheel_mouse(wheel_state):
-    win32api.mouse_event(win32con.MOUSEEVENTF_WHEEL, 0, 0, wheel_state, 0)
-
+    win32api.mouse_event(win32con.MOUSEEVENTF_WHEEL, 0, 0, 120 * wheel_state, 0)
 
 
 

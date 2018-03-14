@@ -33,7 +33,6 @@ class InputProcessor:
                 io_device_processor_index = self.identify_io_device(data)
                 processor = self._io_devices_processors[io_device_processor_index]
                 processor.process_input(data[data.index('|')+1:])
-            sleep(0.00000001)
 
     def stop(self):
         self._process.terminate()
