@@ -3,7 +3,7 @@ import win32con
 
 
 def move_mouse(position):
-    win32api.SetCursorPos(position)
+    win32api.mouse_event(win32con.MOUSEEVENTF_MOVE, position[0], position[1])
 
 
 def click_mouse(click_state):
@@ -17,7 +17,8 @@ def click_mouse(click_state):
 
 
 def wheel_mouse(wheel_state):
-    win32api.mouse_event(win32con.MOUSEEVENTF_WHEEL, 0, 0, 120 * wheel_state, 0)
+    win32api.mouse_event(
+        win32con.MOUSEEVENTF_WHEEL, 0, 0, 120 * wheel_state, 0)
 
 
 

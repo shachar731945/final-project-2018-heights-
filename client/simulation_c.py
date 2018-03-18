@@ -13,6 +13,8 @@ def main():
 
 
 if __name__ == "__main__":
+    from time import sleep
+    sleep(1.5)
     main()
 
 

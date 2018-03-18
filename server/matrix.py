@@ -1,6 +1,6 @@
 class Matrix:
 
-    def __init__(self, row, col, pointer):
+    def __init__(self, row, col, pointer=(0, 0)):
         self._matrix = []
         self._pointer = pointer
         self._matrix = [[object for c in range(col)] for r in range(row)]
