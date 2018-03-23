@@ -4,8 +4,8 @@ from mimik_keyboard import press_key, release_key
 
 class KeyboardInputProcessor(DeviceInputProcessor):
 
-    def __init__(self, network_manager):
-        DeviceInputProcessor.__init__(self, network_manager)
+    def __init__(self):
+        DeviceInputProcessor.__init__(self)
         self._keyboard_event_type_dictionary = {
             "p": self.press, "r": self.release
         }

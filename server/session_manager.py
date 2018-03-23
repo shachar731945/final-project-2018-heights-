@@ -14,7 +14,8 @@ def set_middle_mouse():
 
 class SessionManager:
     def __init__(self, server_network_manager, pc_matrix,
-                 communication_handle, server_pc_coordinates=(1, 0)):
+                 recv_communication_handle, send_communication_handle,
+                 server_pc_coordinates=(1, 0)):
 
         self._server_pc_coordinates = server_pc_coordinates
         self._pc_matrix = pc_matrix
@@ -25,6 +26,10 @@ class SessionManager:
         communication_handle1, communication_handle2 = Pipe()
         matrix_communication_handle1, matrix_communication_handle2 = Pipe()
         update_hooker_state_pipe1, update_hooker_state_pipe2 = Pipe()
+        self.__pipes = [communication_handle1, communication_handle2,
+                        matrix_communication_handle1,
+                        matrix_communication_handle2,
+                        update_hooker_state_pipe1, update_hooker_state_pipe2]
 
         q = Queue()
         q.put(self._server_network_manager)
@@ -38,12 +43,12 @@ class SessionManager:
 
         self.__data_send_process = Process(
             target=data_send,
-            args=(q, communication_handle2,
-                  matrix_communication_handle1, pc_matrix))
+            args=(communication_handle2, matrix_communication_handle1,
+                  send_communication_handle, pc_matrix))
 
         self.__track_changes_process = Process(
             target=track_changes,
-            args=(matrix_communication_handle2, communication_handle,
+            args=(matrix_communication_handle2, recv_communication_handle,
                   pc_matrix, get_middle_position(), update_hooker_state_pipe2,
                   server_pc_coordinates))
 
@@ -66,6 +71,9 @@ class SessionManager:
         self.__tracking_process.terminate()
         self.__data_send_process.terminate()
         self.__track_changes_process.terminate()
+        for pipe in self.__pipes:
+            pipe.close()
+
 
 
 

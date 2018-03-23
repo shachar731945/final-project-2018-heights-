@@ -15,12 +15,8 @@ class ClientNetworkManager:
 
     def recv_message(self):
         print("gg")
-        try:
-            data, addr = self._socket.recvfrom(self._recv_length)
-            return data.decode(), addr
-        except:
-            print("asdf")
-            return "blaaa", 00
+        data, addr = self._socket.recvfrom(self._recv_length)
+        return data.decode(), addr
 
     def close_connection(self):
         self._socket.close()

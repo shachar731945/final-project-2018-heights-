@@ -2,17 +2,17 @@ from win32api import SetCursorPos
 from threading import Thread, Lock
 
 
-def data_send(q, network_communication_handle, matrix_communication_handle,
-              matrix):
+def data_send(network_communication_handle, matrix_communication_handle,
+              send_communication_handle, matrix):
 
     class DataSendingThread(Thread):
 
-        def __init__(self, communication_server,
+        def __init__(self, send_handle,
                      network_communication_pipe_handle,
                      matrix_communication_pipe_handle, temp_matrix,
                      thread_lock):
             Thread.__init__(self)
-            self._server = communication_server
+            self._send_handle = send_handle
             self._network_communication_handle = \
                 network_communication_pipe_handle
             self._matrix_communication_handle = \
@@ -30,7 +30,7 @@ def data_send(q, network_communication_handle, matrix_communication_handle,
                     # print(str(self._pc_matrix.get_pointer()))
                     #     print("send to " + str(pc.address))
                     self._lock.release()
-                    self._server.send_message(data_recv, pc.address)
+                    self._send_handle.send((data_recv, pc.address))
 
         def change_data(self):
             while 1:
@@ -42,10 +42,9 @@ def data_send(q, network_communication_handle, matrix_communication_handle,
                     self._lock.release()
 
     threading_lock = Lock()
-    server = q.get()
 
     functionality_class = DataSendingThread(
-        server, network_communication_handle,
+        send_communication_handle, network_communication_handle,
         matrix_communication_handle, matrix, threading_lock)
     functionality_class.start()
     functionality_class.change_data()
