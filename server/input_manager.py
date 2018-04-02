@@ -82,13 +82,14 @@ def track_changes(matrix_communication_handle,
                     #     print("A")
                     print("bla bla ", pc_matrix.get_pointer(),
                           server_pc_coordinates)
+                    print(pc_matrix.get_pointer(), " ", server_pc_coordinates)
                     if pc_matrix.get_pointer() != server_pc_coordinates:
-                        print("bad change")
+                        print("change to other pc00000000 ", address)
                         SetCursorPos(static_middle_position)
-                        update_hooker_state_pipe.send(False)
+                        update_hooker_state_pipe.send(str(False))
                     else:
-                        print("good change")
-                        update_hooker_state_pipe.send(True)
+                        print("change to server pc")
+                        update_hooker_state_pipe.send(str(True))
 
                 except Exception as e:  # exception handling
                     print(str(e))

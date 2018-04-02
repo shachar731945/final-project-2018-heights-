@@ -35,7 +35,8 @@ class InputTracker:
         while 1:
             data_recv = self._update_pointer_pipe.recv()
             if data_recv:
-                self._pc_server_pointed = data_recv
+                print("hooking was updated ", data_recv)
+                self._pc_server_pointed = eval(data_recv)
                 print("nibba ", self._pc_server_pointed)
 
     def keyboard_press(self, event):
@@ -53,6 +54,7 @@ class InputTracker:
         # return True
 
     def mouse_event(self, event):
+        # print(self._pc_server_pointed)
         if not self._pc_server_pointed:
             if event.MessageName == "mouse move":
                 position = event.Position
@@ -61,6 +63,7 @@ class InputTracker:
                             position[1] - self._static_position[1])
                 self._communication_handle.send("m|m|" + str(movement))
             elif event.MessageName == "mouse wheel":
+                print(self._pc_server_pointed)
                 self._communication_handle.send("m|w|" + str(event.Wheel))
         return self._pc_server_pointed
         # print("kulululululullululu?")

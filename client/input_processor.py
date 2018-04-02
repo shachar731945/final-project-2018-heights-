@@ -43,16 +43,18 @@ class InputProcessor:
     def track_changes(self):
         # print(id(self._client_network_manager))
         resolution_x, resolution_y = InputProcessor.get_screen_resolution()
+        print("resolution is ", resolution_x, " ", resolution_y)
         while 1:
             pos_x, pos_y = InputProcessor.get_mouse__position()
+            print(pos_x, " posses ", pos_y)
             return_message = ""
-            if pos_x < 0:
+            if pos_x <= 0:
                 return_message += "l"
-            elif pos_x > resolution_x:
+            elif pos_x >= resolution_x:
                 return_message += "r"
-            if pos_y < 0:
+            if pos_y <= 0:
                 return_message += "u"
-            elif pos_y > resolution_y:
+            elif pos_y >= resolution_y:
                 return_message += "d"
             if return_message:
                 print("bicth you guessed it?")

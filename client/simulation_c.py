@@ -35,7 +35,7 @@ def main():
     input_processor = InputProcessor(get_comm2, send_comm2)
     input_processor.initialize()
     from time import sleep
-    sleep(10)
+    sleep(40)
     p.terminate()
     p2.terminate()
     input_processor.stop()

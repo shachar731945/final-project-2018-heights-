@@ -1,6 +1,10 @@
 import socket
 
 
+def get_local_ip_address():
+    return str(socket.gethostbyname(socket.gethostname()))
+
+
 class ServerNetworkManager:
 
     def __init__(self, port, recv_length=1024):
