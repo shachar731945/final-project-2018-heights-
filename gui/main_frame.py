@@ -1,5 +1,6 @@
 import wx
-from form_new_session_panel import NewSessionPanel
+from gui.form_new_session_panel import NewSessionPanel
+from server.server_network_manager import ServerNetworkManager
 
 FRAME_SIZE_X, FRAME_SIZE_Y = 1500, 1000
 
@@ -31,6 +32,10 @@ class MainFrame(wx.Frame):
         menu_bar.Append(options_menu, "Options")
 
         self.SetMenuBar(menu_bar)
+        self.status_bar = self.CreateStatusBar(1,
+                                               0 | wx.CLIP_CHILDREN |
+                                               wx.NO_BORDER,
+                                               wx.ID_ANY)
 
         # self._starting_panel = StartingPanel()
 
@@ -41,7 +46,9 @@ class MainFrame(wx.Frame):
         print("asd")
 
     def start_session_panel_activate(self, e):
-        new_session_panel = NewSessionPanel(FRAME_SIZE_X, FRAME_SIZE_Y, self)
+        server_netwrok_manager = ServerNetworkManager()
+        new_session_panel = NewSessionPanel(FRAME_SIZE_X, FRAME_SIZE_Y, self,
+                                            server_netwrok_manager)
         new_session_panel.Enable()
         new_session_panel.Show()
         self.Update()
