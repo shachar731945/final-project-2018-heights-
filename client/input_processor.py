@@ -1,5 +1,5 @@
-from mouse_input_processor import MouseInputProcessor
-from keyboard_input_processor import KeyboardInputProcessor
+from client.mouse_input_processor import MouseInputProcessor
+from client.keyboard_input_processor import KeyboardInputProcessor
 from time import sleep
 from win32api import GetCursorPos, GetSystemMetrics
 from multiprocessing import Process
