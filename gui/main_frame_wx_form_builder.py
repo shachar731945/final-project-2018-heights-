@@ -109,6 +109,8 @@ class MainFrame(wx.Frame):
 
         self.form_matrix_panel = wx.Panel(self, wx.ID_ANY, wx.DefaultPosition,
                                           wx.DefaultSize, wx.TAB_TRAVERSAL)
+        self.form_matrix_panel.Hide()
+
         bSizer14 = wx.BoxSizer(wx.VERTICAL)
 
         horizontal_sizer111 = wx.BoxSizer(wx.HORIZONTAL)
