@@ -72,6 +72,8 @@ class MainFrame(wx.Frame):
                                                     wx.DefaultPosition,
                                                     wx.DefaultSize,
                                                     wx.TAB_TRAVERSAL)
+        self.join_wxisting_session_panel.Hide()
+
         bSizer4 = wx.BoxSizer(wx.VERTICAL)
 
         self.join_session_static_text = wx.StaticText(

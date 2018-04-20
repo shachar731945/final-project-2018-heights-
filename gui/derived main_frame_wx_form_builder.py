@@ -129,6 +129,8 @@ class ProgramFrame(MainFrame):
         self.status_bar.SetStatusText(
             COMPUTER_NUMBER_MESSAGE.format(computer_number), 0)
         print(ip_value)
+
+    def start_session(self, event):
         main(self.__client_netwrok_manager)
 
     def form_session(self, event):
