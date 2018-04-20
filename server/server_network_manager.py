@@ -16,7 +16,7 @@ class ServerNetworkManager:
         self._recv_length = recv_length
 
     def send_message(self, data, adrr):
-        print("gugu? ", data)
+        print("gugu? ", data, adrr)
         self._socket.sendto(str(data).encode(), adrr)
 
     # def new_connection(self):

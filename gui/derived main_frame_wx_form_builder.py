@@ -80,7 +80,7 @@ class ProgramFrame(MainFrame):
                 self.computers_list_ctrl_matrix.SetItem(
                     pc_number - 1, 1,
                     UPDATE_MATRIX_COORDINATES_MESSAGE.format(x_ratio, y_ratio))
-                if pc_number == 1:
+                if pc_number == 2:   # change right away
                     self.pc_matrix.set_pointer((x_ratio, y_ratio))
                 # update pc_number-1 or by good pos / not recommended
                 # good way is to have numerical order
@@ -120,10 +120,12 @@ class ProgramFrame(MainFrame):
         self.Layout()
 
     def connect_to_session(self, event):
-        ip_value, port = eval(self.enter_ip_text_ctrl.GetValue())
+        (ip_value, port) = eval(self.enter_ip_text_ctrl.GetValue())
+        port = int(port)
         self.__client_netwrok_manager = ClientNetworkManager(ip_value, port)
         self.__client_netwrok_manager.send_message("check")
-        computer_number = self.__client_netwrok_manager.recv_message()
+        computer_number, adrr = self.__client_netwrok_manager.recv_message()
+        print(computer_number, "chinchila")
         self.status_bar.SetStatusText(
             COMPUTER_NUMBER_MESSAGE.format(computer_number), 0)
         print(ip_value)

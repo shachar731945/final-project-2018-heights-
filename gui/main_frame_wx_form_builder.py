@@ -72,8 +72,6 @@ class MainFrame(wx.Frame):
                                                     wx.DefaultPosition,
                                                     wx.DefaultSize,
                                                     wx.TAB_TRAVERSAL)
-        self.join_wxisting_session_panel.Hide()
-
         bSizer4 = wx.BoxSizer(wx.VERTICAL)
 
         self.join_session_static_text = wx.StaticText(
@@ -98,6 +96,11 @@ class MainFrame(wx.Frame):
             wx.DefaultPosition, wx.DefaultSize, 0)
         bSizer17.Add(self.connect_to_session_button, 0,
                      wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+
+        self.m_button6 = wx.Button(self.join_wxisting_session_panel, wx.ID_ANY,
+                                   u"MyButton", wx.DefaultPosition,
+                                   wx.DefaultSize, 0)
+        bSizer17.Add(self.m_button6, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 
         bSizer4.Add(bSizer17, 1, wx.EXPAND, 5)
 
@@ -251,6 +254,7 @@ class MainFrame(wx.Frame):
         self.form_session_button.Bind(wx.EVT_BUTTON, self.form_session)
         self.connect_to_session_button.Bind(wx.EVT_BUTTON,
                                             self.connect_to_session)
+        self.m_button6.Bind(wx.EVT_BUTTON, self.start_session)
         self.computers_list_ctrl_matrix.Bind(wx.EVT_LIST_ITEM_ACTIVATED,
                                              self.change_coordinates)
         self.start_session_button.Bind(wx.EVT_BUTTON,
@@ -274,6 +278,9 @@ class MainFrame(wx.Frame):
         event.Skip()
 
     def connect_to_session(self, event):
+        event.Skip()
+
+    def start_session(self, event):
         event.Skip()
 
     def end_session_calibration(self, event):

@@ -46,7 +46,7 @@ class InputProcessor:
         print("resolution is ", resolution_x, " ", resolution_y)
         while 1:
             pos_x, pos_y = InputProcessor.get_mouse__position()
-            print(pos_x, " posses ", pos_y)
+            # print(pos_x, " posses ", pos_y)
             return_message = ""
             if pos_x <= 0:
                 return_message += "l"

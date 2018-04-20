@@ -19,6 +19,8 @@ class SessionManager:
 
         self._server_pc_coordinates = server_pc_coordinates
         self._pc_matrix = pc_matrix
+        print(self._pc_matrix.get(0, 0))
+        print(self._pc_matrix.get(1, 0))
         self._server_network_manager = server_network_manager
 
         # create connecting pipes and queues
