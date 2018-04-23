@@ -3,7 +3,7 @@ import socket
 
 class ClientNetworkManager:
 
-    def __init__(self, ip, port, recv_length=1024):
+    def __init__(self, ip, port=8845, recv_length=1024):
         self._recv_length = recv_length
         self._send_ip = ip
         self._send_port = port

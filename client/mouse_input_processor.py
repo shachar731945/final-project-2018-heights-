@@ -1,5 +1,5 @@
-from client.io_device_processor import DeviceInputProcessor
-from client.mimik_mouse import click_mouse, wheel_mouse, move_mouse
+from io_device_processor import DeviceInputProcessor
+from mimik_mouse import click_mouse, wheel_mouse, move_mouse
 from win32api import GetSystemMetrics
 from win32gui import GetCursorPos
 

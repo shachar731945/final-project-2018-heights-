@@ -1,7 +1,7 @@
-from client.mouse_input_processor import MouseInputProcessor
-from client.keyboard_input_processor import KeyboardInputProcessor
+from mouse_input_processor import MouseInputProcessor
+from keyboard_input_processor import KeyboardInputProcessor
 from time import sleep
-from win32api import GetCursorPos, GetSystemMetrics
+from win32api import GetCursorPos, GetSystemMetrics, SetCursorPos
 from multiprocessing import Process
 
 
@@ -46,7 +46,7 @@ class InputProcessor:
         print("resolution is ", resolution_x, " ", resolution_y)
         while 1:
             pos_x, pos_y = InputProcessor.get_mouse__position()
-            # print(pos_x, " posses ", pos_y)
+            print(pos_x, " posses ", pos_y)
             return_message = ""
             if pos_x <= 0:
                 return_message += "l"
@@ -58,7 +58,8 @@ class InputProcessor:
                 return_message += "d"
             if return_message:
                 print("bicth you guessed it?")
-                self._send_data_handle.send(return_message)
+                SetCursorPos((int(resolution_x/2), int(resolution_y/2)))
+                self._send_data_handle.send(str(return_message))
 
     def stop(self):
         self._tracking_input_process.terminate()
@@ -73,7 +74,7 @@ class InputProcessor:
 
     @staticmethod
     def get_screen_resolution():
-        return GetSystemMetrics(0), GetSystemMetrics(1)
+        return GetSystemMetrics(0) - 1, GetSystemMetrics(1)
 
 
 

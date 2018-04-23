@@ -1,4 +1,3 @@
-from win32api import SetCursorPos
 from threading import Thread, Lock
 
 
@@ -85,7 +84,7 @@ def track_changes(matrix_communication_handle,
                     print(pc_matrix.get_pointer(), " ", server_pc_coordinates)
                     if pc_matrix.get_pointer() != server_pc_coordinates:
                         print("change to other pc00000000 ", address)
-                        SetCursorPos(static_middle_position)
+                        # SetCursorPos(static_middle_position)
                         update_hooker_state_pipe.send(str(False))
                     else:
                         print("change to server pc")
