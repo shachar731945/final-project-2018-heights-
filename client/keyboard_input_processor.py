@@ -1,5 +1,5 @@
-from io_device_processor import DeviceInputProcessor
-from mimik_keyboard import press_key, release_key
+from client.io_device_processor import DeviceInputProcessor
+from client.mimik_keyboard import press_key, release_key
 
 
 class KeyboardInputProcessor(DeviceInputProcessor):

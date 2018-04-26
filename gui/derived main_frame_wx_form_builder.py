@@ -7,8 +7,8 @@ from server.matrix import Matrix
 from server.computer import Computer
 from server.simulation import SessionMain
 from client.client_network_manager import ClientNetworkManager
-from client.simulation_c import main
-from threading import Lock
+from client.simulation_c import SessionClient
+from threading import Lock, Event
 
 UPDATE_MATRIX_COORDINATES_MESSAGE = "({0}, {1})"
 COMPUTER_NUMBER_MESSAGE = "computer number: {0}"
@@ -41,6 +41,7 @@ class ProgramFrame(MainFrame):
         self.__client_netwrok_manager = None
         self.pc_matrix = None
         self._session_main = None
+        self._session_client = None
 
         self.computers_list_ctrl_matrix.InsertColumn(0, "computer number",
                                                      width=150)
@@ -59,7 +60,7 @@ class ProgramFrame(MainFrame):
         self.__new_connection_evt_id = wx.NewId()
         self.__result_event = ResultEvent("", self.__new_connection_evt_id)
         self.__lock = Lock()
-        self.confirm_state = True
+        self.confirm_state = Event()
         self.__connecting_new_clients_thread = Thread(
             target=self.__server_netwrok_manager.recv_clients_function,
             args=(self, self.__result_event, self.__lock,
@@ -80,7 +81,7 @@ class ProgramFrame(MainFrame):
                 self.computers_list_ctrl_matrix.SetItem(
                     pc_number - 1, 1,
                     UPDATE_MATRIX_COORDINATES_MESSAGE.format(x_ratio, y_ratio))
-                if pc_number == 2:   # change right away
+                if pc_number == 1:
                     self.pc_matrix.set_pointer((x_ratio, y_ratio))
                 # update pc_number-1 or by good pos / not recommended
                 # good way is to have numerical order
@@ -120,22 +121,19 @@ class ProgramFrame(MainFrame):
         self.Layout()
 
     def connect_to_session(self, event):
-        (ip_value, port) = eval(self.enter_ip_text_ctrl.GetValue())
-        port = int(port)
+        ip_value, port = eval(self.enter_ip_text_ctrl.GetValue())
         self.__client_netwrok_manager = ClientNetworkManager(ip_value, port)
         self.__client_netwrok_manager.send_message("check")
-        computer_number, adrr = self.__client_netwrok_manager.recv_message()
-        print(computer_number, "chinchila")
+        computer_number = self.__client_netwrok_manager.recv_message()
         self.status_bar.SetStatusText(
             COMPUTER_NUMBER_MESSAGE.format(computer_number), 0)
         print(ip_value)
-
-    def start_session(self, event):
-        main(self.__client_netwrok_manager)
+        self._session_client = SessionClient(self.__client_netwrok_manager)
+        self._session_client.start_session()
 
     def form_session(self, event):
         print("am i here?")
-        self.confirm_state = False
+        self.confirm_state.set()
         evt_dissconnect(self, self.new_connection_update,
                         self.__new_connection_evt_id)
         pc_num = len(self._address_number_dictionary.keys())
@@ -154,12 +152,13 @@ class ProgramFrame(MainFrame):
     def end_session_calibration(self, event):
         self._session_main = SessionMain(
             self.__server_netwrok_manager, self.pc_matrix)
-        self._session_main.active_session()
-
-    def end_active_session(self, event):
-        self._session_main.main_disable()
+        self._session_main.start_main()
 
     def quit(self, event):
+        if self._session_main:
+            self._session_main.stop_session()
+        elif self._session_client:
+            self._session_client.stop_session()
         self.Close()
 
 

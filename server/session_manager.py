@@ -1,5 +1,5 @@
-from input_tracker import InputTracker
-from input_manager import data_send, track_changes
+from server.input_tracker import InputTracker
+from server.input_manager import data_send, track_changes
 from multiprocessing import Process, Queue, Pipe
 from win32api import GetSystemMetrics, SetCursorPos
 

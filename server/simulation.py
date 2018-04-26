@@ -1,7 +1,7 @@
-from server_network_manager import ServerNetworkManager
-from matrix import Matrix
-from computer import Computer
-from session_manager import SessionManager
+from server.server_network_manager import ServerNetworkManager
+from server.matrix import Matrix
+from server.computer import Computer
+from server.session_manager import SessionManager
 from multiprocessing import Process, Queue, Pipe
 from time import sleep
 
@@ -35,7 +35,6 @@ def main():
     pc_matrix.set(1, 0, pc_controller)
     pc_matrix.set(0, 0, pc_controlled)
     q = Queue()
-    q = Queue()
     q.put(server)
     q.put(server)
     recv_communication_handle1, recv_communication_handle2 = Pipe()
@@ -61,14 +60,36 @@ def main():
     #     pipe.close()
 
 
+class SessionMain:
+    def __init__(self, server, pc_matrix):
+        self.server = server
+        self.pc_matrix = pc_matrix
+        q = Queue()
+        q.put(server)
+        q.put(server)
+        recv_communication_handle1, recv_communication_handle2 = Pipe()
+        send_network_comm1, send_network_comm2 = Pipe()
+        pipes = [recv_communication_handle1, recv_communication_handle2,
+                 send_network_comm1, send_network_comm2]
+        self.session_manager = SessionManager(server, pc_matrix,
+                                              recv_communication_handle2,
+                                              send_network_comm2)
+        self.p = Process(target=getting_information,
+                         args=(recv_communication_handle1,
+                               q,))
+        self.p2 = Process(target=send_information, args=(
+            send_network_comm1, q,))
+
+    def start_main(self):
+        self.p.start()
+        self.p2.start()
+        self.session_manager.initialize_session()
+
+    def stop_session(self):
+        self.p.terminate()
+        self.p2.terminate()
+        self.session_manager.end_session()
+
+
 if __name__ == '__main__':
     main()
-
-
-
-
-
-
-
-
-

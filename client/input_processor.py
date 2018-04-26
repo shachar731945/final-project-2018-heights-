@@ -1,5 +1,5 @@
-from mouse_input_processor import MouseInputProcessor
-from keyboard_input_processor import KeyboardInputProcessor
+from client.mouse_input_processor import MouseInputProcessor
+from client.keyboard_input_processor import KeyboardInputProcessor
 from time import sleep
 from win32api import GetCursorPos, GetSystemMetrics, SetCursorPos
 from multiprocessing import Process
@@ -57,7 +57,7 @@ class InputProcessor:
             elif pos_y >= resolution_y:
                 return_message += "d"
             if return_message:
-                print("bicth you guessed it?")
+                print("bit you guessed it?")
                 SetCursorPos((int(resolution_x/2), int(resolution_y/2)))
                 self._send_data_handle.send(str(return_message))
 
