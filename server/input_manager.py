@@ -67,6 +67,9 @@ def track_changes(matrix_communication_handle,
         # communication
         if return_data and address == \
                 pc_matrix.get_pointer_value().address:
+            print(
+                "adres ", pc_matrix.get_pointer_value().address,
+                " recieved address ", address)
             for char in return_data:
                 change_matrix_functions = functions_dictionary[char]
                 try:

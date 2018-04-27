@@ -16,7 +16,7 @@ class ServerNetworkManager:
         self._recv_length = recv_length
 
     def send_message(self, data, adrr):
-        print("gugu? ", data, adrr)
+        # print("gugu? ", data, adrr)
         self._socket.sendto(str(data).encode(), adrr)
 
     # def new_connection(self):
@@ -39,7 +39,8 @@ class ServerNetworkManager:
     def recv_message_non_block(self):
         self._socket.settimeout(0.01)
         try:
-            return self.recv_message()
+            temp = self.recv_message()
+            return temp[0], temp[1]
         except socket.timeout:
             return "", ""
         finally:
@@ -59,7 +60,7 @@ class ServerNetworkManager:
                 self.send_message(custome_event.data, adrr)
                 lock.release()
         print("gugiiiiiii i went out of thread")
-        self._socket.settimeout(0)
+        self._socket.setblocking(1)
         print("gugu i went out of thread")
 
     def close_connection(self):
