@@ -37,11 +37,12 @@ class ProgramFrame(MainFrame):
     def __init__(self, *args, **kwargs):
         MainFrame.__init__(self, *args, **kwargs)
 
-        self.__server_netwrok_manager = ServerNetworkManager()
+        self.__server_netwrok_manager = None
         self.__client_netwrok_manager = None
         self.pc_matrix = None
         self._session_main = None
         self._session_client = None
+        self.__connecting_new_clients_thread = None
 
         self.computers_list_ctrl_matrix.InsertColumn(0, "computer number",
                                                      width=150)
@@ -61,11 +62,6 @@ class ProgramFrame(MainFrame):
         self.__result_event = ResultEvent("", self.__new_connection_evt_id)
         self.__lock = Lock()
         self.confirm_state = Event()
-        self.__connecting_new_clients_thread = Thread(
-            target=self.__server_netwrok_manager.recv_clients_function,
-            args=(self, self.__result_event, self.__lock,
-                  self.confirm_state))
-        self.__connecting_new_clients_thread.daemon = True
 
         self._index = 1
 
@@ -108,6 +104,12 @@ class ProgramFrame(MainFrame):
         self.Update()
         self.Layout()
         self.computers_list_ctrl.DeleteAllItems()
+        self.__server_netwrok_manager = ServerNetworkManager()
+        self.__connecting_new_clients_thread = Thread(
+            target=self.__server_netwrok_manager.recv_clients_function,
+            args=(self, self.__result_event, self.__lock,
+                  self.confirm_state))
+        self.__connecting_new_clients_thread.daemon = True
         evt_connect(
             self, self.new_connection_update, self.__new_connection_evt_id)
         self.__connecting_new_clients_thread.start()
