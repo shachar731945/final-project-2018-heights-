@@ -1,5 +1,5 @@
 from server.server_network_manager import ServerNetworkManager
-from server.matrix import Matrix
+from server.server_matrix import ServerMatrix
 from server.computer import Computer
 from server.session_manager import SessionManager
 from multiprocessing import Process, Queue, Pipe
@@ -24,7 +24,7 @@ def send_information(comm, queue):
 
 def main():
     server = ServerNetworkManager(8845)
-    pc_matrix = Matrix(2, 1, (0, 0))
+    pc_matrix = ServerMatrix(1, 2, 0, 0, 0, 1)
     print(33)
     data, adrr = server.recv_message()
     print("juju ", adrr)
@@ -32,7 +32,7 @@ def main():
     data, adrr = server.recv_message()
     print("juju ", adrr)
     pc_controller = Computer(adrr)
-    pc_matrix.set(1, 0, pc_controller)
+    pc_matrix.set(0, 1, pc_controller)
     pc_matrix.set(0, 0, pc_controlled)
     q = Queue()
     q.put(server)
@@ -51,7 +51,7 @@ def main():
     p2.start()
     print("blasasd")
     session_manager.initialize_session()
-    sleep(40)
+    sleep(20)
     p.terminate()
     p2.terminate()
     session_manager.end_session()
@@ -64,6 +64,7 @@ class SessionMain:
     def __init__(self, server, pc_matrix):
         self.server = server
         self.pc_matrix = pc_matrix
+        # self.server_pc_coordinates = server_pc_coordinates
         q = Queue()
         q.put(server)
         q.put(server)

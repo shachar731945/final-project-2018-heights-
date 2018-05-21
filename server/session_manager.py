@@ -14,10 +14,8 @@ def set_middle_mouse():
 
 class SessionManager:
     def __init__(self, server_network_manager, pc_matrix,
-                 recv_communication_handle, send_communication_handle,
-                 server_pc_coordinates=(1, 0)):
+                 recv_communication_handle, send_communication_handle):
 
-        self._server_pc_coordinates = server_pc_coordinates
         self._pc_matrix = pc_matrix
         self._server_network_manager = server_network_manager
 
@@ -34,12 +32,19 @@ class SessionManager:
         q = Queue()
         q.put(self._server_network_manager)
 
+        set_middle_mouse()
+
         # creating processes
+
+        if self._pc_matrix.pointer != self._pc_matrix.server_pointer:
+            temp = False
+        else:
+            temp = True
 
         self.__tracking_process = Process(
             target=self.initialize_tracking_process,
             args=(communication_handle1, get_middle_position(),
-                  update_hooker_state_pipe1))
+                  update_hooker_state_pipe1, temp))
 
         self.__data_send_process = Process(
             target=data_send,
@@ -49,19 +54,18 @@ class SessionManager:
         self.__track_changes_process = Process(
             target=track_changes,
             args=(matrix_communication_handle2, recv_communication_handle,
-                  pc_matrix, get_middle_position(), update_hooker_state_pipe2,
-                  server_pc_coordinates))
+                  pc_matrix, update_hooker_state_pipe2))
 
     @staticmethod
     def initialize_tracking_process(communication_handle, static_position,
-                                    update_hooker_state_pipe):
+                                    update_hooker_state_pipe, recv_state):
         InputTracker(communication_handle, static_position,
-                     update_hooker_state_pipe)
+                     update_hooker_state_pipe, recv_state)
 
     def initialize_session(self):
         # initiate processes
-        if self._server_pc_coordinates != self._pc_matrix.get_pointer():
-            set_middle_mouse()
+        # this "if" below is to check if the pointer is on the server_pointer
+        # for check. more needs to be added for tracker check
         self.__tracking_process.start()
         self.__data_send_process.start()
         self.__track_changes_process.start()

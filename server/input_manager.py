@@ -51,8 +51,7 @@ def data_send(network_communication_handle, matrix_communication_handle,
 
 def track_changes(matrix_communication_handle,
                   communication_pipe_handle, pc_matrix,
-                  static_middle_position, update_hooker_state_pipe,
-                  server_pc_coordinates=(1, 0)):
+                  update_hooker_state_pipe):
     functions_dictionary = {'l': (pc_matrix.pointer_left,
                                   pc_matrix.check_left),
                             'r': (pc_matrix.pointer_right,
@@ -80,12 +79,11 @@ def track_changes(matrix_communication_handle,
                     # print(pc_matrix.get_pointer())
                     # print(str(pc_matrix.get_pointer_value().address))
                     matrix_communication_handle.send(pc_matrix)
-                    # if address == self._server_pc_address:
-                    #     print("A")
+
                     print("bla bla ", pc_matrix.get_pointer(),
-                          server_pc_coordinates)
-                    print(pc_matrix.get_pointer(), " ", server_pc_coordinates)
-                    if pc_matrix.get_pointer() != server_pc_coordinates:
+                          pc_matrix.pointer.get_tuple())
+                    print(pc_matrix.get_pointer())
+                    if pc_matrix.pointer != pc_matrix.server_pointer:
                         print("change to other pc00000000 ", address)
                         # SetCursorPos(static_middle_position)
                         update_hooker_state_pipe.send(str(False))
@@ -95,9 +93,7 @@ def track_changes(matrix_communication_handle,
 
                 except Exception as e:  # exception handling
                     print(str(e))
-                    # if pc_matrix.get_pointer() == \
-                    #         self._server_pc_coordinates:
-                    #     pass
+
 
 
 

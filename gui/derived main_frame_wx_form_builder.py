@@ -3,7 +3,7 @@ import wx
 from sys import maxsize
 from threading import Thread
 from server.server_network_manager import ServerNetworkManager
-from server.matrix import Matrix
+from server.server_matrix import ServerMatrix
 from server.computer import Computer
 from server.simulation import SessionMain
 from client.client_network_manager import ClientNetworkManager
@@ -43,6 +43,7 @@ class ProgramFrame(MainFrame):
         self._session_main = None
         self._session_client = None
         self.__connecting_new_clients_thread = None
+        self._server_pc_coordinates = None
 
         self.computers_list_ctrl_matrix.InsertColumn(0, "computer number",
                                                      width=150)
@@ -135,27 +136,90 @@ class ProgramFrame(MainFrame):
     def start_session(self, event):
         self._session_client.start_session()
 
+    # this is the old form_session version
+    # def form_session(self, event):
+    #     print("am i here?")
+    #     self.confirm_state.set()
+    #     evt_dissconnect(self, self.new_connection_update,
+    #                     self.__new_connection_evt_id)
+    #     pc_num = len(self._address_number_dictionary.keys())
+    #     self.pc_matrix = Matrix(pc_num, pc_num)
+    #     print(self._address_number_dictionary)
+    #     for pc_number in self._address_number_dictionary.keys():
+    #         print(pc_number)
+    #         self.computers_list_ctrl_matrix.InsertItem(maxsize, str(pc_number))
+    #     self.new_session_panel.Disable()
+    #     self.new_session_panel.Hide()
+    #     self.form_matrix_panel.Enable()
+    #     self.form_matrix_panel.Show()
+    #     self.Update()
+    #     self.Layout()
+
     def form_session(self, event):
         print("am i here?")
         self.confirm_state.set()
         evt_dissconnect(self, self.new_connection_update,
                         self.__new_connection_evt_id)
         pc_num = len(self._address_number_dictionary.keys())
-        self.pc_matrix = Matrix(pc_num, pc_num)
-        print(self._address_number_dictionary)
-        for pc_number in self._address_number_dictionary.keys():
-            print(pc_number)
-            self.computers_list_ctrl_matrix.InsertItem(maxsize, str(pc_number))
+        # from the next line start changing by adding rows and cols to table
+        self.table_grid.AppendRows(pc_num)
+        self.table_grid.AppendCols(pc_num)
         self.new_session_panel.Disable()
         self.new_session_panel.Hide()
-        self.form_matrix_panel.Enable()
-        self.form_matrix_panel.Show()
+        self.from_table_panel.Enable()
+        self.from_table_panel.Show()
         self.Update()
         self.Layout()
 
+    def reset_grid_background_colours(self):
+        pc_number = len(self._address_number_dictionary.keys())
+        for row in range(pc_number):
+            for col in range(pc_number):
+                self.table_grid.SetCellBackgroundColour(row, col, wx.WHITE)
+
+    def select_server_computer(self, event):
+        self.reset_grid_background_colours()
+        self.table_grid.SetCellBackgroundColour(
+            event.GetRow(), event.GetCol(), wx.CYAN)
+        self.table_grid.ForceRefresh()
+        self._server_pc_coordinates = (event.GetRow(), event.GetCol())
+        # the switch is because the (row, col) on wxGrid translates to
+        # (col, row) on Matrix class
+
+    def form_table(self):
+        pc_number = len(self._address_number_dictionary.keys())
+        print(pc_number)
+        print(range(pc_number))
+        try:
+            # shouldn't be 0, 0
+            self.pc_matrix = ServerMatrix(
+                pc_number, pc_number,
+                self._server_pc_coordinates[0], self._server_pc_coordinates[1],
+                self._server_pc_coordinates[0], self._server_pc_coordinates[1])
+        except TypeError:
+            return False
+        for row in range(pc_number):
+            for col in range(pc_number):
+                try:
+                    temp_pc = Computer(self._address_number_dictionary[
+                                int(self.table_grid.GetCellValue(row, col))])
+                    self.pc_matrix.set(row, col, temp_pc)
+                except ValueError:
+                    pass
+        return True
+
+    def confirm_table_and_start_session(self, event):
+        table_confirm = self.form_table()
+        if table_confirm:
+            self.end_session_calibration(None)
+
     def end_session_calibration(self, event):
-        self._session_main = SessionMain(
-            self.__server_netwrok_manager, self.pc_matrix)
+        print("calibrating")
+        for row in range(2):
+            for col in range(2):
+                print(self.pc_matrix.get(row, col))
+        self._session_main = SessionMain(self.__server_netwrok_manager,
+                                         self.pc_matrix)
         self._session_main.start_main()
 
     def quit(self, event):

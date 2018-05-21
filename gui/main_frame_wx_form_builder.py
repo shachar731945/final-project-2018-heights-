@@ -9,6 +9,7 @@
 
 import wx
 import wx.xrc
+import wx.grid
 
 
 ###########################################################################
@@ -216,6 +217,68 @@ class MainFrame(wx.Frame):
         vertical_sizer1.Add(self.form_matrix_panel, 1,
                             wx.EXPAND | wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, 0)
 
+        self.from_table_panel = wx.Panel(self, wx.ID_ANY, wx.DefaultPosition,
+                                         wx.DefaultSize, wx.TAB_TRAVERSAL)
+        self.from_table_panel.Hide()
+
+        bSizer9 = wx.BoxSizer(wx.VERTICAL)
+
+        # bSizer9.AddSpacer((0, 50), 0, wx.EXPAND, 0)
+
+        self.user_message = wx.StaticText(self.from_table_panel, wx.ID_ANY,
+                                          u"Fill in the table according to the physical place of the computers. If any, right click the computer of the session manager",
+                                          wx.DefaultPosition, wx.DefaultSize,
+                                          0)
+        self.user_message.Wrap(-1)
+        bSizer9.Add(self.user_message, 0, wx.ALL | wx.ALIGN_CENTER_HORIZONTAL,
+                    5)
+
+        # bSizer9.AddSpacer((0, 50), 0, wx.EXPAND, 0)
+
+        self.confirm_table_button = wx.Button(self.from_table_panel, wx.ID_ANY,
+                                              u"confirm table and start session",
+                                              wx.DefaultPosition,
+                                              wx.DefaultSize, 0)
+        bSizer9.Add(self.confirm_table_button, 0,
+                    wx.ALL | wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_CENTER_HORIZONTAL,
+                    0)
+
+        # bSizer9.AddSpacer((0, 100), 0, wx.EXPAND, 0)
+
+        self.table_grid = wx.grid.Grid(self.from_table_panel, wx.ID_ANY,
+                                       wx.DefaultPosition, wx.DefaultSize, 0)
+
+        # Grid
+        self.table_grid.CreateGrid(0, 0)
+        self.table_grid.EnableEditing(True)
+        self.table_grid.EnableGridLines(True)
+        self.table_grid.EnableDragGridSize(False)
+        self.table_grid.SetMargins(0, 0)
+
+        # Columns
+        self.table_grid.EnableDragColMove(False)
+        self.table_grid.EnableDragColSize(True)
+        self.table_grid.SetColLabelSize(30)
+        self.table_grid.SetColLabelAlignment(wx.ALIGN_CENTRE, wx.ALIGN_CENTRE)
+
+        # Rows
+        self.table_grid.EnableDragRowSize(True)
+        self.table_grid.SetRowLabelSize(80)
+        self.table_grid.SetRowLabelAlignment(wx.ALIGN_CENTRE, wx.ALIGN_CENTRE)
+
+        # Label Appearance
+
+        # Cell Defaults
+        self.table_grid.SetDefaultCellAlignment(wx.ALIGN_CENTRE, wx.ALIGN_TOP)
+        bSizer9.Add(self.table_grid, 0,
+                    wx.ALL | wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_CENTER_HORIZONTAL,
+                    0)
+
+        self.from_table_panel.SetSizer(bSizer9)
+        self.from_table_panel.Layout()
+        bSizer9.Fit(self.from_table_panel)
+        vertical_sizer1.Add(self.from_table_panel, 1, wx.EXPAND | wx.ALL, 0)
+
         self.SetSizer(vertical_sizer1)
         self.Layout()
         self.status_bar = self.CreateStatusBar(1,
@@ -263,6 +326,10 @@ class MainFrame(wx.Frame):
                                        self.end_session_calibration)
         self.updtae_matrix_button.Bind(wx.EVT_BUTTON, self.update_matrix)
         self.m_button5.Bind(wx.EVT_BUTTON, self.end_active_session)
+        self.confirm_table_button.Bind(wx.EVT_BUTTON,
+                                       self.confirm_table_and_start_session)
+        self.table_grid.Bind(wx.grid.EVT_GRID_CELL_RIGHT_CLICK,
+                             self.select_server_computer)
         self.Bind(wx.EVT_MENU, self.start_new_session_panel,
                   id=self.start_new_session_item.GetId())
         self.Bind(wx.EVT_MENU, self.join_existing_session_panel,
@@ -292,6 +359,12 @@ class MainFrame(wx.Frame):
         event.Skip()
 
     def end_active_session(self, event):
+        event.Skip()
+
+    def confirm_table_and_start_session(self, event):
+        event.Skip()
+
+    def select_server_computer(self, event):
         event.Skip()
 
     def start_new_session_panel(self, event):
