@@ -18,7 +18,7 @@ class Matrix:
         self._matrix[row][col] = item
 
     def get_pointer_value(self):
-        print("ququ", self.pointer.row, self.pointer.col)
+        # print("ququ", self.pointer.row, self.pointer.col)
         return self._matrix[self.pointer.row][self.pointer.col]
 
     def set_pointer_value(self, value):

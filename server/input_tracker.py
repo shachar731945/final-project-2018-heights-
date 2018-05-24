@@ -1,6 +1,7 @@
 import pyHook
 import pythoncom
 from threading import Thread
+from win32gui import GetCursorPos
 # from multiprocessing import Process
 # from mimik_keyboard import press_key, release_key
 # from mimik_mouse import move_mouse, click_mouse, wheel_mouse
@@ -38,6 +39,7 @@ class InputTracker:
                 print("hooking was updated ", data_recv)
                 self._pc_server_pointed = eval(data_recv)
                 print("nibba ", self._pc_server_pointed)
+                print("position ", self._static_position, " ", GetCursorPos())
 
     def keyboard_press(self, event):
         if not self._pc_server_pointed:
@@ -61,6 +63,7 @@ class InputTracker:
                 # print(event.Injected, " injected")
                 movement = (position[0] - self._static_position[0],
                             position[1] - self._static_position[1])
+                print("movement", movement)
                 self._communication_handle.send("m|m|" + str(movement))
             elif event.MessageName == "mouse wheel":
                 print(self._pc_server_pointed)
