@@ -54,7 +54,8 @@ class SessionManager:
         self.__track_changes_process = Process(
             target=track_changes,
             args=(matrix_communication_handle2, recv_communication_handle,
-                  pc_matrix, update_hooker_state_pipe2))
+                  pc_matrix, update_hooker_state_pipe2,
+                  send_communication_handle))
 
     @staticmethod
     def initialize_tracking_process(communication_handle, static_position,

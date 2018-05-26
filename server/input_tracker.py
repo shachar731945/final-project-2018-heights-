@@ -2,7 +2,7 @@ import pyHook
 import pythoncom
 from threading import Thread
 from win32gui import GetCursorPos
-# from multiprocessing import Process
+from multiprocessing import Process
 # from mimik_keyboard import press_key, release_key
 # from mimik_mouse import move_mouse, click_mouse, wheel_mouse
 
@@ -42,18 +42,18 @@ class InputTracker:
                 print("position ", self._static_position, " ", GetCursorPos())
 
     def keyboard_press(self, event):
+        # print("press ", event.KeyID)
+        # return False
         if not self._pc_server_pointed:
             self._communication_handle.send("k|p|" + str(event.KeyID))
         return self._pc_server_pointed
-        # print("was it injected ???", event.Injected, bool(event.Injected))
-        # return True
 
     def keyboard_release(self, event):
+        # print("release ", event.KeyID)
+        # return False
         if not self._pc_server_pointed:
             self._communication_handle.send("k|r|" + str(event.KeyID))
         return self._pc_server_pointed
-        # print("was it injected ???", event.Injected, bool(event.Injected))
-        # return True
 
     def mouse_event(self, event):
         # print(self._pc_server_pointed)
@@ -108,7 +108,7 @@ class InputTracker:
 # just for check
 # from win32api import SetCursorPos
 # SetCursorPos((960, 540))
-
+#
 #
 # def press_keys():
 #     from time import sleep
@@ -116,17 +116,22 @@ class InputTracker:
 #         wheel_mouse(-1)
 #         sleep(0.5)
 #
-#
-# def main():
-#     from time import sleep
-#     sleep(2)
-#     p = Process(target=press_keys)
-#     p.start()
-#     InputTracker(3, 5)
-#
-#
-# if __name__ == '__main__':
-#     main()
+#f0
+
+
+def q():
+    InputTracker(3, 5, 6)
+
+
+def main():
+    p = Process(target=q)
+    p.start()
+    from time import sleep
+    sleep(3000)
+
+
+if __name__ == '__main__':
+    main()
 
 
 

@@ -26,6 +26,9 @@ class InputProcessor:
         self._tracking_input_process.start()
         self._tracking_changes_process.start()
 
+    def identify_io_device(self, data):
+        return self._event_type_dictionary[data.split('|')[0]]
+
     def initialize_process(self):
         # print(id(self._client_network_manager), "in process")
         print("gg ez pz")
@@ -34,11 +37,46 @@ class InputProcessor:
             print("damn")
             data, adrr = self._get_data_handle.recv()
             print(data)
-            if data:
+            input_type = data.split("|")[0]
+            data = data[data.index('|') + 1:]
+            if input_type == "1":
                 io_device_processor_index = self.identify_io_device(data)
                 processor = \
                     self._io_devices_processors[io_device_processor_index]
                 processor.process_input(data[data.index('|')+1:])
+            elif input_type == "2":
+                args = data.split('|')
+                direction_change, position, resolution = \
+                    args[0], eval(args[1]), eval(args[2])
+                new_position = self.get_new_position(
+                    direction_change, position, resolution)
+                SetCursorPos(new_position)
+
+    @staticmethod
+    def get_new_position(direction_change, old_position, old_resolution):
+        new_resolution_x, new_resolution_y = \
+            InputProcessor.get_screen_resolution()
+        if direction_change == "l":
+            new_position_x = new_resolution_x - 1
+            new_position_y = InputProcessor.find_according_to_ratio(
+                old_resolution[1], old_position[1], new_resolution_y)
+        elif direction_change == "r":
+            new_position_x = 0
+            new_position_y = InputProcessor.find_according_to_ratio(
+                old_resolution[1], old_position[1], new_resolution_y)
+        elif direction_change == "u":
+            new_position_x = InputProcessor.find_according_to_ratio(
+                old_resolution[0], old_position[0], new_resolution_x)
+            new_position_y = new_resolution_y
+        else:
+            new_position_x = InputProcessor.find_according_to_ratio(
+                old_resolution[0], old_position[0], new_resolution_x)
+            new_position_y = 0
+        return new_position_x, new_position_y
+
+    @staticmethod
+    def find_according_to_ratio(old_resolution, old_pos, new_resolution):
+        return int(old_pos * new_resolution / old_resolution)
 
     def track_changes(self):
         # print(id(self._client_network_manager))
@@ -50,24 +88,23 @@ class InputProcessor:
             print(pos_x, " posses ", pos_y)
             return_message = ""
             if pos_x <= 0:
-                return_message += "l"
+                return_message = "l"
             elif pos_x >= check_resolution_x:
-                return_message += "r"
+                return_message = "r"
             if pos_y <= 0:
-                return_message += "u"
+                return_message = "u"
             elif pos_y >= check_resolution_y:
-                return_message += "d"
+                return_message = "d"
             if return_message:
                 print("bit you guessed it?")
                 SetCursorPos((int(resolution_x/2), int(resolution_y/2)))
-                self._send_data_handle.send(str(return_message))
+                self._send_data_handle.send(str(return_message) + "|" +
+                                            str(pos_x, pos_y) + "|" +
+                                            str(resolution_x, resolution_y))
 
     def stop(self):
         self._tracking_input_process.terminate()
         self._tracking_changes_process.terminate()
-
-    def identify_io_device(self, data):
-        return self._event_type_dictionary[data.split('|')[0]]
 
     @staticmethod
     def get_mouse__position():
