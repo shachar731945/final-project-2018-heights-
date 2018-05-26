@@ -2,22 +2,21 @@ import pyHook
 import pythoncom
 from threading import Thread
 from win32gui import GetCursorPos
-from multiprocessing import Process
+# from multiprocessing import Process
 # from mimik_keyboard import press_key, release_key
 # from mimik_mouse import move_mouse, click_mouse, wheel_mouse
 
 
 class InputTracker:
 
-    def __init__(self, communication_handle, static_position,
-                 update_pointer_pipe, pc_server_pointed=False):
+    def __init__(self, communication_handle, update_pointer_pipe,
+                 pc_server_pointed=False):
 
         self._pc_server_pointed = pc_server_pointed
         self._hm = pyHook.HookManager()
         self._hm.HookKeyboard()
         self._hm.HookMouse()
         self._communication_handle = communication_handle
-        self._static_position = static_position
         self._hm.MouseAll = self.mouse_event
         self._hm.SubscribeMouseLeftDown(self.mouse_left_down)
         self._hm.SubscribeMouseMiddleDown(self.mouse_middle_down)
@@ -39,30 +38,31 @@ class InputTracker:
                 print("hooking was updated ", data_recv)
                 self._pc_server_pointed = eval(data_recv)
                 print("nibba ", self._pc_server_pointed)
-                print("position ", self._static_position, " ", GetCursorPos())
+                print("position ", GetCursorPos())
 
     def keyboard_press(self, event):
-        # print("press ", event.KeyID)
-        # return False
         if not self._pc_server_pointed:
             self._communication_handle.send("k|p|" + str(event.KeyID))
         return self._pc_server_pointed
+        # print("was it injected ???", event.Injected, bool(event.Injected))
+        # return True
 
     def keyboard_release(self, event):
-        # print("release ", event.KeyID)
-        # return False
         if not self._pc_server_pointed:
             self._communication_handle.send("k|r|" + str(event.KeyID))
         return self._pc_server_pointed
+        # print("was it injected ???", event.Injected, bool(event.Injected))
+        # return True
 
     def mouse_event(self, event):
         # print(self._pc_server_pointed)
         if not self._pc_server_pointed:
             if event.MessageName == "mouse move":
-                position = event.Position
+                new_position = event.Position
+                old_position = GetCursorPos()
                 # print(event.Injected, " injected")
-                movement = (position[0] - self._static_position[0],
-                            position[1] - self._static_position[1])
+                movement = (new_position[0] - old_position[0],
+                            new_position[1] - old_position[1])
                 print("movement", movement)
                 self._communication_handle.send("m|m|" + str(movement))
             elif event.MessageName == "mouse wheel":
@@ -108,7 +108,7 @@ class InputTracker:
 # just for check
 # from win32api import SetCursorPos
 # SetCursorPos((960, 540))
-#
+
 #
 # def press_keys():
 #     from time import sleep
@@ -116,22 +116,17 @@ class InputTracker:
 #         wheel_mouse(-1)
 #         sleep(0.5)
 #
-#f0
-
-
-def q():
-    InputTracker(3, 5, 6)
-
-
-def main():
-    p = Process(target=q)
-    p.start()
-    from time import sleep
-    sleep(3000)
-
-
-if __name__ == '__main__':
-    main()
+#
+# def main():
+#     from time import sleep
+#     sleep(2)
+#     p = Process(target=press_keys)
+#     p.start()
+#     InputTracker(3, 5)
+#
+#
+# if __name__ == '__main__':
+#     main()
 
 
 
