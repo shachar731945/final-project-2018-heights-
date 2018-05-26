@@ -57,21 +57,21 @@ class InputProcessor:
         new_resolution_x, new_resolution_y = \
             InputProcessor.get_screen_resolution()
         if direction_change == "l":
-            new_position_x = new_resolution_x - 1
+            new_position_x = new_resolution_x - 2
             new_position_y = InputProcessor.find_according_to_ratio(
-                old_resolution[1], old_position[1], new_resolution_y)
+                old_resolution[1], old_position[1], new_resolution_y) - 2
         elif direction_change == "r":
-            new_position_x = 1
+            new_position_x = 2
             new_position_y = InputProcessor.find_according_to_ratio(
-                old_resolution[1], old_position[1], new_resolution_y)
+                old_resolution[1], old_position[1], new_resolution_y) - 2
         elif direction_change == "u":
             new_position_x = InputProcessor.find_according_to_ratio(
-                old_resolution[0], old_position[0], new_resolution_x)
-            new_position_y = new_resolution_y - 1
+                old_resolution[0], old_position[0], new_resolution_x) - 2
+            new_position_y = new_resolution_y - 2
         else:
             new_position_x = InputProcessor.find_according_to_ratio(
-                old_resolution[0], old_position[0], new_resolution_x)
-            new_position_y = 1
+                old_resolution[0], old_position[0], new_resolution_x) - 2
+            new_position_y = 2
         return new_position_x, new_position_y
 
     @staticmethod
@@ -81,20 +81,21 @@ class InputProcessor:
     def track_changes(self):
         # print(id(self._client_network_manager))
         resolution_x, resolution_y = InputProcessor.get_screen_resolution()
-        check_resolution_x, check_resolution_y = resolution_x - 1, resolution_y
+        check_resolution_x, check_resolution_y = \
+            resolution_x - 1, resolution_y - 1
         print("resolution is ", resolution_x, " ", resolution_y)
         while 1:
             pos_x, pos_y = InputProcessor.get_mouse__position()
             print(pos_x, " posses ", pos_y)
             return_message = ""
-            if pos_x <= 0:
-                return_message += "l"
+            if pos_x <= 1:
+                return_message = "l"
             elif pos_x >= check_resolution_x:
-                return_message += "r"
-            if pos_y <= 0:
-                return_message += "u"
+                return_message = "r"
+            if pos_y <= 1:
+                return_message = "u"
             elif pos_y >= check_resolution_y:
-                return_message += "d"
+                return_message = "d"
             if return_message:
                 print("bit you guessed it?")
                 # SetCursorPos((int(resolution_x/2), int(resolution_y/2)))
