@@ -104,7 +104,7 @@ class ProgramFrame(MainFrame):
         self.computers_list_ctrl.DeleteAllItems()
         self.__server_netwrok_manager = ServerNetworkManager()
         # temp_byted_pc_address = str(
-        #     (get_local_ip_address(),
+        #     (get_local_ip_address(),ab
         #      self.__server_netwrok_manager.port)).encode("utf-8")
         # self.message_list_ctrl.AppendText(b64encode(temp_byted_pc_address))
         addr = ip_address(get_local_ip_address())

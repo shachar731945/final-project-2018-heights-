@@ -83,7 +83,7 @@ class InputProcessor:
         resolution_x, resolution_y = InputProcessor.get_screen_resolution()
         check_resolution_x, check_resolution_y = \
             resolution_x - 1, resolution_y - 1
-        print("resolution is ", resolution_x, " ", resolution_y)
+        # print("resolution is ", resolution_x, " ", resolution_y)
         while 1:
             pos_x, pos_y = InputProcessor.get_mouse__position()
             print(pos_x, " posses ", pos_y)

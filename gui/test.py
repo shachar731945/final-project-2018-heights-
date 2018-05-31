@@ -93,9 +93,10 @@ class MyForm(wx.Frame):
 
 # ----------------------------------------------------------------------
 # Run the program
-if __name__ == "__main__":
-    app = wx.App()
-    frame = MyForm().Show()
-    app.MainLoop()
+
+import socket
+s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+s.connect(("8.8.8.8", 80))
+print(s.getsockname()[0])
 
 
