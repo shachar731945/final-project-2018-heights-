@@ -5,6 +5,8 @@ from wx import PostEvent
 def get_local_ip_address():
     return str(socket.gethostbyname(socket.gethostname()))
 
+# print(type(get_local_ip_address())) (str)
+
 
 class ServerNetworkManager:
 
