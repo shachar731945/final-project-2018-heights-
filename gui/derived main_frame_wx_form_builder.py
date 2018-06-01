@@ -48,15 +48,15 @@ class ProgramFrame(MainFrame):
         self.__connecting_new_clients_thread = None
         self._server_pc_coordinates = None
 
-        self.computers_list_ctrl_matrix.InsertColumn(0, "computer number",
-                                                     width=150)
-        self.computers_list_ctrl_matrix.InsertColumn(1, "coordinates",
-                                                     width=100)
+        # self.computers_list_ctrl_matrix.InsertColumn(0, "computer number",
+        #                                              width=150)
+        # self.computers_list_ctrl_matrix.InsertColumn(1, "coordinates",
+        #                                              width=100)
 
         self.computers_list_ctrl.InsertColumn(
-            0, "computer number", width=50)
+            0, "pc number", width=150)
         self.computers_list_ctrl.InsertColumn(
-            1, "ip", width=150)
+            1, "address", width=150)
         self._address_number_dictionary = {}
         # self.computers_list_ctrl.InsertColumn(
         #     2, "coordinates", wx.LIST_FORMAT_LEFT,

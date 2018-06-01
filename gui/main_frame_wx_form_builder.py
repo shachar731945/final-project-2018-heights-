@@ -32,7 +32,7 @@ class MainFrame(wx.Frame):
 
         vertical_sizer2 = wx.BoxSizer(wx.VERTICAL)
 
-        # vertical_sizer2.AddSpacer((0, 50), 0, wx.EXPAND, 0)
+        vertical_sizer2.AddSpacer(50)
 
         self.message_list_ctrl = wx.TextCtrl(self.new_session_panel, wx.ID_ANY,
                                              u"when connecting to session from other computer, enter this ip for connection: ",
@@ -45,7 +45,7 @@ class MainFrame(wx.Frame):
 
         horizontal_sizer1 = wx.BoxSizer(wx.HORIZONTAL)
 
-        # horizontal_sizer1.AddSpacer((100, 0), 0, wx.EXPAND, 0)
+        horizontal_sizer1.AddSpacer(100)
 
         self.computers_list_ctrl = wx.ListCtrl(self.new_session_panel,
                                                wx.ID_ANY, wx.DefaultPosition,
@@ -54,10 +54,11 @@ class MainFrame(wx.Frame):
         horizontal_sizer1.Add(self.computers_list_ctrl, 0,
                               wx.ALL | wx.ALIGN_CENTER_VERTICAL, 0)
 
-        # horizontal_sizer1.AddSpacer((200, 0), 0, wx.EXPAND, 0)
+        horizontal_sizer1.AddSpacer(200)
 
         self.form_session_button = wx.Button(self.new_session_panel, wx.ID_ANY,
-                                             u"MyButton", wx.DefaultPosition,
+                                             u"start forming table",
+                                             wx.DefaultPosition,
                                              wx.DefaultSize, 0)
         horizontal_sizer1.Add(self.form_session_button, 0,
                               wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
@@ -73,19 +74,21 @@ class MainFrame(wx.Frame):
                                                     wx.DefaultPosition,
                                                     wx.DefaultSize,
                                                     wx.TAB_TRAVERSAL)
-        self.join_wxisting_session_panel.Hide()
-
         bSizer4 = wx.BoxSizer(wx.VERTICAL)
+
+        bSizer4.AddSpacer(100)
 
         self.join_session_static_text = wx.StaticText(
             self.join_wxisting_session_panel, wx.ID_ANY,
-            u"enter the ip of the session manager", wx.DefaultPosition,
+            u"enter the code of the session manager", wx.DefaultPosition,
             wx.DefaultSize, 0)
         self.join_session_static_text.Wrap(-1)
         bSizer4.Add(self.join_session_static_text, 0,
                     wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, 5)
 
         bSizer17 = wx.BoxSizer(wx.HORIZONTAL)
+
+        bSizer17.AddSpacer(100)
 
         self.enter_ip_text_ctrl = wx.TextCtrl(self.join_wxisting_session_panel,
                                               wx.ID_ANY, wx.EmptyString,
@@ -94,14 +97,18 @@ class MainFrame(wx.Frame):
         bSizer17.Add(self.enter_ip_text_ctrl, 0,
                      wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 
+        bSizer17.AddSpacer(100)
+
         self.connect_to_session_button = wx.Button(
-            self.join_wxisting_session_panel, wx.ID_ANY, u"enter ip",
+            self.join_wxisting_session_panel, wx.ID_ANY, u"enter code",
             wx.DefaultPosition, wx.DefaultSize, 0)
         bSizer17.Add(self.connect_to_session_button, 0,
                      wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 
+        bSizer17.AddSpacer(100)
+
         self.m_button6 = wx.Button(self.join_wxisting_session_panel, wx.ID_ANY,
-                                   u"MyButton", wx.DefaultPosition,
+                                   u"start session", wx.DefaultPosition,
                                    wx.DefaultSize, 0)
         bSizer17.Add(self.m_button6, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 
@@ -113,117 +120,13 @@ class MainFrame(wx.Frame):
         vertical_sizer1.Add(self.join_wxisting_session_panel, 1,
                             wx.EXPAND | wx.ALL, 0)
 
-        self.form_matrix_panel = wx.Panel(self, wx.ID_ANY, wx.DefaultPosition,
-                                          wx.DefaultSize, wx.TAB_TRAVERSAL)
-        self.form_matrix_panel.Hide()
-
-        bSizer14 = wx.BoxSizer(wx.VERTICAL)
-
-        horizontal_sizer111 = wx.BoxSizer(wx.HORIZONTAL)
-
-        # horizontal_sizer111.AddSpacer((120, 0), 0, wx.EXPAND, 0)
-
-        self.computers_list_ctrl_matrix = wx.ListCtrl(self.form_matrix_panel,
-                                                      wx.ID_ANY,
-                                                      wx.DefaultPosition,
-                                                      wx.Size(300, 200),
-                                                      wx.LC_ALIGN_LEFT | wx.LC_REPORT)
-        horizontal_sizer111.Add(self.computers_list_ctrl_matrix, 0,
-                                wx.ALL | wx.ALIGN_BOTTOM, 0)
-
-        # horizontal_sizer111.AddSpacer((100, 0), 0, wx.EXPAND, 0)
-
-        bSizer15 = wx.BoxSizer(wx.VERTICAL)
-
-        # bSizer15.AddSpacer((0, 70), 0, wx.EXPAND, 0)
-
-        self.start_session_button = wx.Button(self.form_matrix_panel,
-                                              wx.ID_ANY,
-                                              u"confirm matrix and start session",
-                                              wx.DefaultPosition,
-                                              wx.DefaultSize, wx.NO_BORDER)
-        bSizer15.Add(self.start_session_button, 0,
-                     wx.ALL | wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_CENTER_HORIZONTAL,
-                     0)
-
-        # bSizer15.AddSpacer((0, 70), 0, wx.EXPAND, 0)
-
-        self.updtae_matrix_button = wx.Button(self.form_matrix_panel,
-                                              wx.ID_ANY, u"update matrix",
-                                              wx.DefaultPosition,
-                                              wx.DefaultSize, 0)
-        bSizer15.Add(self.updtae_matrix_button, 0,
-                     wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, 0)
-
-        self.m_button5 = wx.Button(self.form_matrix_panel, wx.ID_ANY,
-                                   u"end session", wx.DefaultPosition,
-                                   wx.DefaultSize, 0)
-        bSizer15.Add(self.m_button5, 0, wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, 5)
-
-        horizontal_sizer111.Add(bSizer15, 1, wx.EXPAND, 5)
-
-        bSizer14.Add(horizontal_sizer111, 1, wx.EXPAND, 5)
-
-        gSizer71 = wx.GridSizer(2, 3, 0, 0)
-
-        self.m_staticText71 = wx.StaticText(self.form_matrix_panel, wx.ID_ANY,
-                                            u"X ratio", wx.DefaultPosition,
-                                            wx.DefaultSize, 0)
-        self.m_staticText71.Wrap(-1)
-        gSizer71.Add(self.m_staticText71, 0,
-                     wx.ALL | wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL,
-                     5)
-
-        self.m_staticText81 = wx.StaticText(self.form_matrix_panel, wx.ID_ANY,
-                                            u"Y ratio", wx.DefaultPosition,
-                                            wx.DefaultSize, 0)
-        self.m_staticText81.Wrap(-1)
-        gSizer71.Add(self.m_staticText81, 0,
-                     wx.ALL | wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL,
-                     5)
-
-        self.m_staticText91 = wx.StaticText(self.form_matrix_panel, wx.ID_ANY,
-                                            u"computer number",
-                                            wx.DefaultPosition, wx.DefaultSize,
-                                            0)
-        self.m_staticText91.Wrap(-1)
-        gSizer71.Add(self.m_staticText91, 0,
-                     wx.ALL | wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL,
-                     5)
-
-        self.x_text_ctrl = wx.TextCtrl(self.form_matrix_panel, wx.ID_ANY,
-                                       wx.EmptyString, wx.DefaultPosition,
-                                       wx.DefaultSize, 0)
-        gSizer71.Add(self.x_text_ctrl, 0, wx.ALL | wx.ALIGN_CENTER_HORIZONTAL,
-                     5)
-
-        self.y_text_ctrl = wx.TextCtrl(self.form_matrix_panel, wx.ID_ANY,
-                                       wx.EmptyString, wx.DefaultPosition,
-                                       wx.DefaultSize, 0)
-        gSizer71.Add(self.y_text_ctrl, 0, wx.ALL | wx.ALIGN_CENTER_HORIZONTAL,
-                     5)
-
-        self.pc_num_list_ctrl = wx.TextCtrl(self.form_matrix_panel, wx.ID_ANY,
-                                            wx.EmptyString, wx.DefaultPosition,
-                                            wx.DefaultSize, 0)
-        gSizer71.Add(self.pc_num_list_ctrl, 0,
-                     wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, 5)
-
-        bSizer14.Add(gSizer71, 1, wx.EXPAND, 5)
-
-        self.form_matrix_panel.SetSizer(bSizer14)
-        self.form_matrix_panel.Layout()
-        bSizer14.Fit(self.form_matrix_panel)
-        vertical_sizer1.Add(self.form_matrix_panel, 1,
-                            wx.EXPAND | wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, 0)
-
         self.from_table_panel = wx.Panel(self, wx.ID_ANY, wx.DefaultPosition,
                                          wx.DefaultSize, wx.TAB_TRAVERSAL)
         self.from_table_panel.Hide()
 
         bSizer9 = wx.BoxSizer(wx.VERTICAL)
 
-        # bSizer9.AddSpacer((0, 50), 0, wx.EXPAND, 0)
+        bSizer9.AddSpacer(50)
 
         self.user_message = wx.StaticText(self.from_table_panel, wx.ID_ANY,
                                           u"Fill in the table according to the physical place of the computers. If any, right click the computer of the session manager",
@@ -233,7 +136,7 @@ class MainFrame(wx.Frame):
         bSizer9.Add(self.user_message, 0, wx.ALL | wx.ALIGN_CENTER_HORIZONTAL,
                     5)
 
-        # bSizer9.AddSpacer((0, 50), 0, wx.EXPAND, 0)
+        bSizer9.AddSpacer(50)
 
         self.confirm_table_button = wx.Button(self.from_table_panel, wx.ID_ANY,
                                               u"confirm table and start session",
@@ -243,7 +146,7 @@ class MainFrame(wx.Frame):
                     wx.ALL | wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_CENTER_HORIZONTAL,
                     0)
 
-        # bSizer9.AddSpacer((0, 100), 0, wx.EXPAND, 0)
+        bSizer9.AddSpacer(100)
 
         self.table_grid = wx.grid.Grid(self.from_table_panel, wx.ID_ANY,
                                        wx.DefaultPosition, wx.DefaultSize, 0)
@@ -320,12 +223,6 @@ class MainFrame(wx.Frame):
         self.connect_to_session_button.Bind(wx.EVT_BUTTON,
                                             self.connect_to_session)
         self.m_button6.Bind(wx.EVT_BUTTON, self.start_session)
-        self.computers_list_ctrl_matrix.Bind(wx.EVT_LIST_ITEM_ACTIVATED,
-                                             self.change_coordinates)
-        self.start_session_button.Bind(wx.EVT_BUTTON,
-                                       self.end_session_calibration)
-        self.updtae_matrix_button.Bind(wx.EVT_BUTTON, self.update_matrix)
-        self.m_button5.Bind(wx.EVT_BUTTON, self.end_active_session)
         self.confirm_table_button.Bind(wx.EVT_BUTTON,
                                        self.confirm_table_and_start_session)
         self.table_grid.Bind(wx.grid.EVT_GRID_CELL_RIGHT_CLICK,
@@ -350,15 +247,6 @@ class MainFrame(wx.Frame):
         event.Skip()
 
     def start_session(self, event):
-        event.Skip()
-
-    def end_session_calibration(self, event):
-        event.Skip()
-
-    def update_matrix(self, event):
-        event.Skip()
-
-    def end_active_session(self, event):
         event.Skip()
 
     def confirm_table_and_start_session(self, event):
