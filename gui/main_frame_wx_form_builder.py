@@ -131,7 +131,11 @@ class MainFrame(wx.Frame):
         bSizer9.AddSpacer(50)
 
         self.user_message = wx.StaticText(self.from_table_panel, wx.ID_ANY,
-                                          u"Fill in the table according to the physical place of the computers. If any, right click the computer of the session manager",
+                                          u"Fill in the table according to "
+                                          u"the physical place of the "
+                                          u"computers. If any, right click "
+                                          u"the computer of the session "
+                                          u"manager",
                                           wx.DefaultPosition, wx.DefaultSize,
                                           0)
         self.user_message.Wrap(-1)
@@ -141,11 +145,13 @@ class MainFrame(wx.Frame):
         bSizer9.AddSpacer(50)
 
         self.confirm_table_button = wx.Button(self.from_table_panel, wx.ID_ANY,
-                                              u"confirm table and start session",
+                                              u"confirm table and start "
+                                              u"session",
                                               wx.DefaultPosition,
                                               wx.DefaultSize, 0)
         bSizer9.Add(self.confirm_table_button, 0,
-                    wx.ALL | wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_CENTER_HORIZONTAL,
+                    wx.ALL | wx.ALIGN_CENTER_VERTICAL |
+                    wx.ALIGN_CENTER_HORIZONTAL,
                     0)
 
         bSizer9.AddSpacer(100)
@@ -176,7 +182,8 @@ class MainFrame(wx.Frame):
         # Cell Defaults
         self.table_grid.SetDefaultCellAlignment(wx.ALIGN_CENTRE, wx.ALIGN_TOP)
         bSizer9.Add(self.table_grid, 0,
-                    wx.ALL | wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_CENTER_HORIZONTAL,
+                    wx.ALL | wx.ALIGN_CENTER_VERTICAL |
+                    wx.ALIGN_CENTER_HORIZONTAL,
                     0)
 
         self.from_table_panel.SetSizer(bSizer9)
@@ -187,7 +194,8 @@ class MainFrame(wx.Frame):
         self.SetSizer(vertical_sizer1)
         self.Layout()
         self.status_bar = self.CreateStatusBar(1,
-                                               0 | wx.CLIP_CHILDREN | wx.NO_BORDER,
+                                               0 | wx.CLIP_CHILDREN |
+                                               wx.NO_BORDER,
                                                wx.ID_ANY)
         self.menubar = wx.MenuBar(0)
         self.session_item = wx.Menu()

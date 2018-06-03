@@ -50,7 +50,6 @@ class SessionClient:
         self.client = client_manager
         get_comm1, get_comm2 = Pipe()
         send_comm1, send_comm2 = Pipe()
-        pipes = [get_comm1, get_comm2, send_comm1, send_comm2]
         q = Queue()
         q.put(self.client)
         q.put(self.client)

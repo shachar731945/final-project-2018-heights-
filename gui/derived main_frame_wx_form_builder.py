@@ -69,7 +69,6 @@ class ProgramFrame(MainFrame):
         self.__result_event.data = self._index
         self.computers_list_ctrl.SetItem(pos, 1, str(ip_msg))
         self._address_number_dictionary[self._index] = ip_msg
-        print(self._address_number_dictionary)
         self._index += 1
         self.__lock.release()
 
@@ -102,7 +101,6 @@ class ProgramFrame(MainFrame):
         self.Layout()
 
     def connect_to_session(self, event):
-        # change line below
         addr = ip_address(decode(self.enter_ip_text_ctrl.GetValue()))
         ip_value = str(addr)
         self.__client_netwrok_manager = ClientNetworkManager(ip_value)
@@ -110,14 +108,12 @@ class ProgramFrame(MainFrame):
         computer_number, adrr = self.__client_netwrok_manager.recv_message()
         self.status_bar.SetStatusText(
             COMPUTER_NUMBER_MESSAGE.format(computer_number), 0)
-        print(ip_value)
         self._session_client = SessionClient(self.__client_netwrok_manager)
 
     def start_session(self, event):
         self._session_client.start_session()
 
     def form_session(self, event):
-        print("am i here?")
         self.confirm_state.set()
         evt_disconnect(self, self.new_connection_update,
                        self.__new_connection_evt_id)
@@ -152,8 +148,6 @@ class ProgramFrame(MainFrame):
 
     def form_table(self):
         pc_number = len(self._address_number_dictionary.keys())
-        print(pc_number)
-        print(range(pc_number))
         try:
             # shouldn't be 0, 0
             self.pc_matrix = ServerMatrix(
@@ -178,10 +172,6 @@ class ProgramFrame(MainFrame):
             self.end_session_calibration(None)
 
     def end_session_calibration(self, event):
-        print("calibrating")
-        for row in range(2):
-            for col in range(2):
-                print(self.pc_matrix.get(row, col))
         self._session_main = SessionMain(self.__server_netwrok_manager,
                                          self.pc_matrix)
         self._session_main.start_main()

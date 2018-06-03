@@ -7,8 +7,6 @@ def get_local_ip_address():
     s.connect(("8.8.8.8", 80))
     return s.getsockname()[0]
 
-# print(type(get_local_ip_address())) (str)
-
 
 class ServerNetworkManager:
 
@@ -20,23 +18,9 @@ class ServerNetworkManager:
         self._recv_length = recv_length
 
     def send_message(self, data, adrr):
-        # print("gugu? ", data, adrr)
         self._socket.sendto(str(data).encode(), adrr)
 
-    # def new_connection(self):
-    #     data = ""
-    #     while not data:
-    #         data, adrr = self._socket.recvfrom(self._recv_length)
-    #     return adrr
-
     def recv_message(self):
-        # try:
-        #     data, adrr = self._socket.recvfrom(self._recv_length)
-        #     return data.decode(), adrr
-        # except:
-        #     print("qweri")
-        #     return 5, 5
-
         data, adrr = self._socket.recvfrom(self._recv_length)
         return data.decode(), adrr
 
@@ -54,7 +38,6 @@ class ServerNetworkManager:
                               confirm_state):
         while not confirm_state.is_set():
             data, adrr = self.recv_message_non_block()
-            "gugu"
             if data:
                 custome_event.data = adrr
                 PostEvent(wx_object, custome_event)
@@ -63,34 +46,7 @@ class ServerNetworkManager:
                 lock.acquire()
                 self.send_message(custome_event.data, adrr)
                 lock.release()
-        print("gugiiiiiii i went out of thread")
         self._socket.setblocking(1)
-        print("gugu i went out of thread")
 
     def close_connection(self):
-        print("wuhu?")
         self._socket.close()
-
-
-#
-# def main():
-#     ser = ServerNetworkManager(8835)
-#     data, address = ser.recv_message()
-#     print(data)
-#     data = input("a")
-#     while data != "gu":
-#         ser.send_message(data, address)
-#         data = input("a")
-#     ser.close_connection()
-#
-#
-# if __name__ == '__main__':
-#     main()
-
-
-
-
-
-
-
-

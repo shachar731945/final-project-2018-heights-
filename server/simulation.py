@@ -41,7 +41,7 @@ def main():
     send_network_comm1, send_network_comm2 = Pipe()
     pipes = [recv_communication_handle1, recv_communication_handle2,
              send_network_comm1, send_network_comm2]
-    session_manager = SessionManager(server, pc_matrix,
+    session_manager = SessionManager(pc_matrix,
                                      recv_communication_handle2,
                                      send_network_comm2)
     p = Process(target=getting_information, args=(recv_communication_handle1,
@@ -72,7 +72,7 @@ class SessionMain:
         send_network_comm1, send_network_comm2 = Pipe()
         pipes = [recv_communication_handle1, recv_communication_handle2,
                  send_network_comm1, send_network_comm2]
-        self.session_manager = SessionManager(server, pc_matrix,
+        self.session_manager = SessionManager(pc_matrix,
                                               recv_communication_handle2,
                                               send_network_comm2)
         self.p = Process(target=getting_information,

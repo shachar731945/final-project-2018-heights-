@@ -1,5 +1,5 @@
 from server.input_tracker import InputTracker
-from multiprocessing import Process, Queue, Pipe
+from multiprocessing import Process, Pipe
 from threading import Thread, Lock
 from win32api import GetSystemMetrics, SetCursorPos
 
@@ -13,11 +13,20 @@ def set_middle_mouse():
 
 
 class SessionManager:
-    def __init__(self, server_network_manager, pc_matrix,
+    def __init__(self, pc_matrix,
                  recv_communication_handle, send_communication_handle):
+        """
+        this function is the initializing function of the session manager. it
+        creates the required processes for the server side program to work
+        :param pc_matrix: the table of computers including the pointer of the
+        session manager computer
+        :param recv_communication_handle: the pipe to pass received information
+        from the internet to the program
+        :param send_communication_handle: the pipe to pass information to send
+        information from the program to the server
+        """
 
         self._pc_matrix = pc_matrix
-        self._server_network_manager = server_network_manager
 
         # create connecting pipes and queues
 
@@ -29,19 +38,11 @@ class SessionManager:
         self.__update_hooker_state_pipe1, \
             self.__update_hooker_state_pipe2 = Pipe()
 
-        q = Queue()
-        q.put(self._server_network_manager)
-
         # creating processes
-
-        if self._pc_matrix.pointer != self._pc_matrix.server_pointer:
-            temp = False
-        else:
-            temp = True
 
         self.__tracking_process = Process(
             target=self.initialize_tracking_process,
-            args=(temp,))
+            args=(self._pc_matrix.pointer == self._pc_matrix.server_pointer,))
 
         self.__data_send_process = Process(target=self.data_send)
 
@@ -49,6 +50,13 @@ class SessionManager:
             target=self.track_changes)
 
     def track_changes(self):
+        """
+        this function receives input from the clients regarding a change in the
+        pc matrix. this process analyzes this input, changes the pointer of the
+        matrix accordingly and notifying the new controlled pc and the other
+        server-side processes that regard the matrix
+        :return: None
+        """
         functions_dictionary = {'l': (self._pc_matrix.pointer_left,
                                       self._pc_matrix.check_left),
                                 'r': (self._pc_matrix.pointer_right,
@@ -63,39 +71,37 @@ class SessionManager:
             # communication
             if data and address == \
                     self._pc_matrix.get_pointer_value().address:
+                # separating the message to the required arguments
                 args = data.split('|')
                 direction_change, position, resolution = \
                     args[0], eval(args[1]), eval(args[2])
-                # print(
-                #     "adres ", self._pc_matrix.get_pointer_value().address,
-                #     " recieved address ", address)
+                # getting the functions to check and change matrix according
+                # to the border direction
                 change_matrix_functions = functions_dictionary[
                     direction_change]
                 try:
-                    # print(str(pc_matrix.get_pointer_value().address))
+                    # checking if a computer exists in the supposed location
+                    # according to component of Computer class (that's why the
+                    # exception exists)
                     address = change_matrix_functions[1]().address
-                    # print(str(address) + "address printed1")
+                    # if a transition is possible, change the pointer in the
+                    # matrix for the change
                     change_matrix_functions[0]()
-                    # print(pc_matrix.get_pointer())
+                    # send a declaring massage to the new controlled computer
+                    # in order for him to change the mouse location
                     self.__send_communication_handle.send(("2|" + data,
                                                            address))
-                    # print(str(pc_matrix.get_pointer_value().address))
+                    # updating the other process that sends io input on the new
+                    # updated pc_matrix with new pointer
                     self.__matrix_communication_handle2.send(
                         self._pc_matrix)
-
-                    print("bla bla ", self._pc_matrix.get_pointer(),
-                          self._pc_matrix.pointer.get_tuple())
-                    print(self._pc_matrix.get_pointer())
-
-                    if self._pc_matrix.pointer != \
-                            self._pc_matrix.server_pointer:
-                        print("change to other pc00000000 ", address)
-                        # SetCursorPos(static_middle_position)
-                        self.__update_hooker_state_pipe2.send(str(False))
-                    else:
-                        print("change to server pc")
-                        self.__update_hooker_state_pipe2.send(str(True))
-
+                    # updating the hooker of io input if the controlled pc is
+                    # the server pc in order to de/confirm io input
+                    self.__update_hooker_state_pipe2.send(str(
+                        self._pc_matrix.pointer ==
+                        self._pc_matrix.server_pointer))
+                # exception handling for nothing because this is in case the
+                # transition doesn't lead any other pc
                 except Exception as e:  # exception handling
                     print(str(e))
 
@@ -104,6 +110,14 @@ class SessionManager:
                      recv_state)
 
     def data_send(self):
+        """
+        this function that represents a process receives io input data from the
+        tracker and sends it to the controlled pc according to the pc matrix
+        pointed Computer object. this function has an inside thread class just
+        in order for the pc_matrix to be shared between the 2 threads so when
+        the matrix is updated the sender thread will be updated as well.
+        :return: None
+        """
         class DataSendingThread(Thread):
 
             def __init__(self, send_network_communication_pipe_handle,
@@ -120,6 +134,13 @@ class SessionManager:
                 self._lock = thread_lock
 
             def run(self):
+                """
+                this function is the one that actually sends the io input
+                information that is received by the pipe that connects the
+                input_tracker process to this one to the pointed computer on
+                the matrix
+                :return: None
+                """
                 while 1:
                     data_recv = self._recv_handle.recv()
                     if data_recv:
@@ -131,6 +152,14 @@ class SessionManager:
                         self._send_handle.send(("1|" + data_recv, pc.address))
 
             def change_data(self):
+                """
+                this function is receiving the new updated matrix by another
+                process on the server-side (the track_changes process that
+                receives information from client). it updates the matrix
+                so the sender thread will send the io input to the appropriate
+                computer
+                :return: None
+                """
                 while 1:
                     recv_data = self._matrix_communication_handle.recv()
                     if recv_data:
@@ -138,8 +167,10 @@ class SessionManager:
                         self._pc_matrix = recv_data
                         self._lock.release()
 
+        # creating the thread lock for threading cooperation
         threading_lock = Lock()
 
+        # creating the thread and starting the 2 threads of this process
         functionality_class = DataSendingThread(
             self.__send_communication_handle, self.__ioinput_handle2,
             self.__matrix_communication_handle1, self._pc_matrix,
@@ -149,8 +180,6 @@ class SessionManager:
 
     def initialize_session(self):
         # initiate processes
-        # this "if" below is to check if the pointer is on the server_pointer
-        # for check. more needs to be added for tracker check
         self.__tracking_process.start()
         self.__data_send_process.start()
         self.__track_changes_process.start()

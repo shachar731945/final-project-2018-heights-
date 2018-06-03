@@ -4,7 +4,6 @@ from server.pointer import Pointer
 class Matrix:
 
     def __init__(self, row, col, row_pointer=0, col_pointer=0):
-        print(row_pointer, "shushu ", col_pointer)
         self.pointer = Pointer(row_pointer, col_pointer)
         self._matrix = [[object for c in range(col)] for r in range(row)]
         # (row, col)
@@ -18,7 +17,6 @@ class Matrix:
         self._matrix[row][col] = item
 
     def get_pointer_value(self):
-        # print("ququ", self.pointer.row, self.pointer.col)
         return self._matrix[self.pointer.row][self.pointer.col]
 
     def set_pointer_value(self, value):
@@ -44,9 +42,7 @@ class Matrix:
         return self._matrix[self.pointer.row + 1][self.pointer.col]
 
     def pointer_right(self):
-        print("update right to ")
         self.pointer.col += 1
-        print(self.get_pointer(), "new pointer")
 
     def check_right(self):
         return self._matrix[self.pointer.row][self.pointer.col + 1]
