@@ -22,7 +22,7 @@ class MainFrame(wx.Frame):
                           pos=wx.DefaultPosition, size=wx.Size(878, 598),
                           style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL)
 
-        self.SetSizeHintsSz(wx.DefaultSize, wx.DefaultSize)
+        self.SetSizeHints(wx.DefaultSize, wx.DefaultSize)
 
         vertical_sizer1 = wx.BoxSizer(wx.VERTICAL)
 
@@ -203,14 +203,14 @@ class MainFrame(wx.Frame):
                                                   u"new session",
                                                   wx.EmptyString,
                                                   wx.ITEM_NORMAL)
-        self.session_item.AppendItem(self.start_new_session_item)
+        self.session_item.Append(self.start_new_session_item)
 
         self.session_item.AppendSeparator()
 
         self.join_session_item = wx.MenuItem(self.session_item, wx.ID_ANY,
                                              u"join session", wx.EmptyString,
                                              wx.ITEM_NORMAL)
-        self.session_item.AppendItem(self.join_session_item)
+        self.session_item.Append(self.join_session_item)
 
         self.menubar.Append(self.session_item, u"Session")
 
@@ -218,7 +218,7 @@ class MainFrame(wx.Frame):
         self.quit_menu_item = wx.MenuItem(self.options_menu, wx.ID_ANY,
                                           u"Quit", wx.EmptyString,
                                           wx.ITEM_NORMAL)
-        self.options_menu.AppendItem(self.quit_menu_item)
+        self.options_menu.Append(self.quit_menu_item)
 
         self.menubar.Append(self.options_menu, u"Options")
 
